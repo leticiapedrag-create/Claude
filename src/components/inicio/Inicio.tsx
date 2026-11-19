@@ -1,0 +1,70 @@
+"use client";
+import Link from "next/link";
+import { BookOpen, Clock, GraduationCap, Siren, Stethoscope, Timer } from "lucide-react";
+import { NOME_CENARIO, type Caso } from "@/lib/caso/schema";
+import { avaliar } from "@/lib/engine/avaliacao";
+import { useArmazenamento } from "@/hooks/useArmazenamento";
+
+export default function Inicio() {
+  const { config, tentativas, casos } = useArmazenamento();
+  const melhor = (c: Caso) => {
+    const ts = tentativas.filter((t) => t.caso.id === c.id && t.registro.fim);
+    if (!ts.length) return null;
+    return Math.max(...ts.map((t) => avaliar(t.caso, t.registro, { revisoes: t.revisoes }).pct));
+  };
+  const grupos: [string, Caso[]][] = [
+    ["Estações clínicas", casos.filter((c) => c.area === "clinica")],
+    ["Estações de clínica cirúrgica", casos.filter((c) => c.area === "cirurgica")],
+  ];
+  return (
+    <div className="space-y-8">
+      <section className="relative overflow-hidden rounded-3xl bg-navy p-6 text-white sm:p-8">
+        <div className="absolute -right-24 -top-24 size-80 rounded-full bg-teal-500/30 blur-3xl" style={{ background: "radial-gradient(circle, rgba(43,179,163,.45), transparent 70%)" }} />
+        <p className="relative text-xs font-semibold uppercase tracking-widest text-white/60">Hospital virtual · {config.nomeProva}</p>
+        <h1 className="relative mt-2 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">Atenda pacientes 3D, examine, decida e receba a avaliação pelo checklist.</h1>
+        <p className="relative mt-3 max-w-2xl text-white/75">Prova configurada: {config.numeroEstacoes} estações ({config.estacoesClinicas} clínicas e {config.estacoesCirurgicas} cirúrgicas), {config.pontuacaoTotal} pontos, meta de {config.meta} pontos. Ajuste em Configurações.</p>
+        <div className="relative mt-5 flex flex-wrap gap-2 text-[13px]">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5"><GraduationCap size={15} /> Aprendizado: dicas, pausa e retorno imediato</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5"><Timer size={15} /> OSCE: tempo limitado, sem dicas</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5"><Siren size={15} /> Emergência: evolução clínica no tempo</span>
+        </div>
+      </section>
+
+      {grupos.map(([titulo, lista]) => (
+        <section key={titulo}>
+          <h2 className="mb-3 text-lg font-bold">{titulo}</h2>
+          {lista.length === 0 ? (
+            <p className="cartao p-4 text-sm text-muted">Nenhum caso nesta área ainda. Importe seus roteiros em <Link className="font-semibold text-accent" href="/casos">Casos</Link>.</p>
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2">
+              {lista.map((c) => {
+                const m = melhor(c);
+                const tempo = config.tempoEstacao[c.id] ?? c.duracaoMin;
+                return (
+                  <article key={c.id} className="cartao flex flex-col p-5" data-caso={c.id}>
+                    <p className="rotulo">{c.especialidade} · {NOME_CENARIO[c.cenario]}</p>
+                    <h3 className="mt-1 text-lg font-bold leading-snug">{c.titulo}</h3>
+                    <p className="mt-1 line-clamp-3 text-sm text-muted">{c.enunciado}</p>
+                    <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted">
+                      <span className="inline-flex items-center gap-1"><Clock size={13} /> {tempo} min</span>
+                      <span className="inline-flex items-center gap-1"><Stethoscope size={13} /> {c.manobras.length} manobras · {c.exames.length} exames</span>
+                      <span>{m === null ? "Ainda não realizada" : <>Melhor nota: <strong className="text-ink">{m}%</strong></>}</span>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Link className="botao" href={`/simulacao?caso=${c.id}&modo=aprendizado`}><GraduationCap size={16} /> Aprendizado</Link>
+                      <Link className="botao-primario" href={`/simulacao?caso=${c.id}&modo=osce`}><Timer size={16} /> Modo OSCE</Link>
+                      {c.evolucao && <Link className="botao" href={`/simulacao?caso=${c.id}&modo=emergencia`}><Siren size={16} /> Emergência</Link>}
+                      <Link className="botao ml-auto px-2.5" href={`/casos?id=${c.id}`} aria-label="Ver ficha do caso"><BookOpen size={16} /></Link>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </section>
+      ))}
+
+      <p className="text-xs text-muted">Os casos incluídos são demonstrativos, criados para treino, e não são estações oficiais da Afya. Você pode importar seus próprios roteiros e checklists.</p>
+    </div>
+  );
+}
