@@ -16,7 +16,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const caminho = usePathname();
   const { config } = useArmazenamento();
   const alternarTema = () => {
-    const atual = document.documentElement.dataset.theme === "escuro" ? "escuro" : "claro";
+    const t = document.documentElement.dataset.theme;
+    const atual = t === "escuro" || t === "dark" ? "escuro" : "claro";
     const novo = atual === "escuro" ? "claro" : "escuro";
     armazenamento.salvarConfig({ ...config, tema: novo });
     aplicarTema(novo);

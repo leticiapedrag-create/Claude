@@ -11,6 +11,7 @@ import { armazenamento } from "@/lib/store/armazenamento";
 import { valorDaEstacao } from "@/lib/store/config";
 import { useArmazenamento } from "@/hooks/useArmazenamento";
 import { RadarCompetencias } from "@/components/graficos/Graficos";
+import { NO_ARTEFATO } from "@/lib/plataforma";
 
 const NOME_STATUS: Record<StatusItem, string> = { cumprido: "Cumprido", nao_cumprido: "Não cumprido", sequencia_inadequada: "Fora de sequência", pendente_revisao: "Aguarda revisão" };
 const NOME_EVIDENCIA: Record<Evidencia, string> = { interface: "ação na tela", texto: "fala verificada", ia: "interpretação de IA", manual: "revisão manual", nenhuma: "sem evidência" };
@@ -73,7 +74,7 @@ export default function Relatorio() {
           <div className="nao-imprimir flex flex-wrap gap-2 sm:flex-col">
             <Link className="botao-primario" href={`/simulacao?caso=${caso.id}&modo=${r.modo}`}><RotateCcw size={16} /> Refazer estação</Link>
             <Link className={`botao ${erros.length ? "" : "pointer-events-none opacity-50"}`} href={`/simulacao?caso=${caso.id}&modo=aprendizado&foco=${erros.join(",")}`}><Target size={16} /> Treinar apenas meus erros</Link>
-            <button className="botao" onClick={() => window.print()}><FileDown size={16} /> Exportar PDF</button>
+            {!NO_ARTEFATO && <button className="botao" onClick={() => window.print()}><FileDown size={16} /> Exportar PDF</button>}
           </div>
         </div>
         <p className="border-t border-line bg-surface-2 px-5 py-2 text-xs text-muted">

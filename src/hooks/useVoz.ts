@@ -6,6 +6,16 @@
  * Se o navegador não oferecer um dos recursos, a interface usa texto.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
+import { NO_ARTEFATO, usarCapacidade } from "@/lib/plataforma";
+
+/** Ditado do claude.ai (versão publicada): a plataforma segura o microfone e entrega o texto. */
+interface Ditado {
+  start(o?: { language?: string }): Promise<void>;
+  stop(): Promise<void>;
+  onPartial(h: (e: { text: string }) => void): () => void;
+  onFinal(h: (e: { text: string }) => void): () => void;
+  onState(h: (e: { state: string; reason?: string }) => void): () => void;
+}
 
 /* Tipos mínimos: a Web Speech API de reconhecimento não está no lib.dom padrão. */
 interface ResultadoFala { isFinal: boolean; 0: { transcript: string } }
@@ -36,10 +46,12 @@ export function useVoz(opts: {
   onFalaFim?: () => void;
 }) {
   // Usado apenas em componentes montados no cliente.
-  const [suporte] = useState(() => ({
-    reconhecimento: !!construtorReconhecimento(),
+  const [suporteNavegador] = useState(() => ({
+    reconhecimento: !NO_ARTEFATO && !!construtorReconhecimento(),
     sintese: typeof window !== "undefined" && "speechSynthesis" in window,
   }));
+  const [ditado, setDitado] = useState<Ditado | null>(null);
+  const suporte = { reconhecimento: suporteNavegador.reconhecimento || !!ditado, sintese: suporteNavegador.sintese };
   const [ouvindo, setOuvindo] = useState(false);
   const [parcial, setParcial] = useState("");
   const [erro, setErro] = useState<string | null>(null);
@@ -61,7 +73,50 @@ export function useVoz(opts: {
     return () => speechSynthesis.removeEventListener("voiceschanged", escolher);
   }, []);
 
+  useEffect(() => {
+    if (!NO_ARTEFATO) return;
+    let vivo = true;
+    const desligar: (() => void)[] = [];
+    usarCapacidade<Ditado>("dictation").then((d) => {
+      if (!vivo || !d) return;
+      desligar.push(
+        d.onPartial(({ text }) => setParcial(text)),
+        d.onFinal(({ text }) => {
+          setParcial("");
+          if (text.trim()) cb.current.onFinal(text.trim());
+          void d.stop().catch(() => {});
+        }),
+        d.onState(({ state, reason }) => {
+          setOuvindo(state !== "idle");
+          if (state === "idle" && reason && !["stopped", "viewer_stopped", "hidden"].includes(reason)) {
+            setErro(reason === "not_granted" ? "Ditado não autorizado. Use o texto." : reason === "unavailable" ? "Ditado indisponível nesta visualização." : "Falha no ditado. Tente de novo ou use o texto.");
+            if (reason === "not_granted" || reason === "unavailable") setDitado(null);
+          }
+        }),
+      );
+      setDitado(d);
+    });
+    return () => {
+      vivo = false;
+      desligar.forEach((f) => f());
+    };
+  }, []);
+
   const ouvir = useCallback(() => {
+    if (ditado) {
+      if (ouvindo) {
+        void ditado.stop().catch(() => {});
+        return;
+      }
+      if ("speechSynthesis" in window) speechSynthesis.cancel();
+      setErro(null);
+      // start() precisa ser chamado direto do toque/clique, sem await antes.
+      ditado.start({ language: "pt-BR" }).catch((e: { code?: string }) => {
+        if (e?.code === "not_granted") setErro("Ditado não autorizado. Use o texto.");
+        else if (e?.code && e.code !== "stopped" && e.code !== "dismissed") setErro("Ditado indisponível agora. Use o texto.");
+      });
+      return;
+    }
     const Ctor = construtorReconhecimento();
     if (!Ctor) return;
     if (rec.current) {
@@ -102,7 +157,7 @@ export function useVoz(opts: {
       rec.current = null;
       setOuvindo(false);
     }
-  }, []);
+  }, [ditado, ouvindo]);
 
   const falar = useCallback((texto: string, ritmo = 1) => {
     if (!("speechSynthesis" in window)) return false;

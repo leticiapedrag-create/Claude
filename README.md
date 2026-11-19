@@ -137,6 +137,14 @@ Baixe o modelo em **Casos → Baixar modelo** (é o caso de AVC completo). O sch
 
 A versão anterior (HTML estático) continua disponível em `/v1/index.html`.
 
+### Versão de página única (celular, sem servidor)
+`npm run build:artefato` gera `dist-artefato/index.html` + `app.js`, com o mesmo código e um roteador em memória no lugar do roteador do Next.js. É a versão publicada como página do claude.ai. Nela:
+- o ditado de voz usa o recurso de ditado do claude.ai (Chrome e app desktop); no app do celular e no Safari, digite ou use o microfone do teclado do sistema;
+- a voz do paciente usa a síntese de voz do navegador;
+- "Exportar PDF" não aparece (a impressão é bloqueada); backups e casos são salvos pelo recurso de download do claude.ai;
+- a IA conversacional opcional não está disponível (não há servidor);
+- os dados ficam no navegador de cada aparelho.
+
 ## Referências clínicas dos casos
 
 Listadas na ficha de cada caso e no relatório (AHA/ASA 2019, Linha de Cuidado do AVC do Ministério da Saúde, diretriz brasileira de trombólise, NIHSS; Manual de Normas e Procedimentos para Vacinação do MS, ANVISA, NR-32, AFP). O conteúdo está marcado como **rascunho** até revisão por docente; o status pode ser atualizado na biblioteca de casos.

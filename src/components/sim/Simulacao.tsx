@@ -12,6 +12,7 @@ import { estadoClinico, formatarRelogio } from "@/lib/engine/emergencia";
 import { armazenamento } from "@/lib/store/armazenamento";
 import { useVoz } from "@/hooks/useVoz";
 import { useArmazenamento } from "@/hooks/useArmazenamento";
+import { BotaoConfirmar } from "@/components/ui/BotaoConfirmar";
 import { estadoInicialCena, DURACAO_VISUAL, VISTA_DO_VISUAL, type AlvoInterativo, type Equipamento, type EstadoCena, type PontoVista } from "../three/tipos";
 import { ICONES_ABA, PainelConversa, PainelDecisoes, PainelExame, PainelExames, PainelNihss } from "./paineis";
 
@@ -316,7 +317,11 @@ function Atendimento({ caso, modo, foco, onSair }: { caso: Caso; modo: Modo; foc
       {/* ---------------- barra superior */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-2 p-2 sm:p-3" style={{ paddingTop: "max(env(safe-area-inset-top), 0.5rem)" }}>
         <div className="vidro pointer-events-auto flex min-w-0 items-center gap-2 rounded-2xl px-2 py-1.5">
-          <button onClick={() => (fase === "porta" || confirm("Sair sem salvar este atendimento?")) && onSair()} className="rounded-lg p-2 hover:bg-surface-2" aria-label="Sair"><ArrowLeft size={18} /></button>
+          {fase === "porta" ? (
+            <button onClick={() => onSair()} className="rounded-lg p-2 hover:bg-surface-2" aria-label="Sair"><ArrowLeft size={18} /></button>
+          ) : (
+            <BotaoConfirmar onConfirmar={() => onSair()} className="rounded-lg p-2 text-[12px] font-semibold hover:bg-surface-2" pergunta="Sair sem salvar?" aria-label="Sair"><ArrowLeft size={18} /></BotaoConfirmar>
+          )}
           <div className="min-w-0 pr-2">
             <p className="truncate text-sm font-bold leading-tight">{caso.titulo}</p>
             <p className="truncate text-[11px] text-muted">{NOME_CENARIO[caso.cenario]} · Modo {NOME_MODO[modo]}</p>
@@ -358,11 +363,11 @@ function Atendimento({ caso, modo, foco, onSair }: { caso: Caso; modo: Modo; foc
         <>
           {/* conversa */}
           {conversaAberta ? (
-            <div className="absolute bottom-20 left-2 top-20 z-20 w-[min(92vw,360px)] sm:left-3">
+            <div className={`absolute inset-x-2 bottom-[4.75rem] z-20 h-[46dvh] sm:inset-x-auto sm:bottom-20 sm:left-3 sm:top-20 sm:h-auto sm:w-[360px] ${aba ? "max-sm:hidden" : ""}`}>
               <PainelConversa sessao={s} versao={versao} onEnviar={enviar} voz={voz} aguardando={aguardandoIA} iaAtiva={config.iaHabilitada && iaDisponivel} onFechar={() => setConversaAberta(false)} />
             </div>
           ) : (
-            <button onClick={() => setConversaAberta(true)} className="vidro absolute left-3 top-20 z-20 flex items-center gap-2 rounded-2xl px-3 py-2.5 text-sm font-semibold"><MessageSquare size={16} /> Conversa</button>
+            <button onClick={() => { setConversaAberta(true); if (window.matchMedia("(max-width: 639px)").matches) setAba(null); }} className="vidro absolute left-2 top-20 z-20 flex items-center gap-2 rounded-2xl px-3 py-2.5 text-sm font-semibold sm:left-3"><MessageSquare size={16} /> Conversa</button>
           )}
 
           {/* painel de ações */}
@@ -371,14 +376,14 @@ function Atendimento({ caso, modo, foco, onSair }: { caso: Caso; modo: Modo; foc
               {abas.map((a) => {
                 const Icone = ICONES_ABA[a];
                 return (
-                  <button key={a} onClick={() => { setAba(aba === a ? null : a); if (a !== "exame") setFiltroEquip(null); }} className={`flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold ${aba === a ? "bg-accent text-accent-contrast" : "hover:bg-surface-2"}`} aria-pressed={aba === a}>
+                  <button key={a} onClick={() => { setAba(aba === a ? null : a); if (a !== "exame") setFiltroEquip(null); }} className={`flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-[13px] font-semibold ${aba === a ? "bg-accent text-accent-contrast" : "hover:bg-surface-2"}`} aria-pressed={aba === a} aria-label={NOMES_ABA[a]}>
                     <Icone size={15} /> <span className="hidden sm:inline">{NOMES_ABA[a]}</span>
                   </button>
                 );
               })}
             </div>
             {aba && (
-              <div className="vidro max-h-[calc(100dvh-11rem)] w-[min(92vw,400px)] overflow-y-auto rounded-2xl p-3 shadow-xl" data-testid={`painel-${aba}`}>
+              <div className="vidro overflow-y-auto rounded-2xl p-3 shadow-xl max-sm:fixed max-sm:inset-x-2 max-sm:bottom-[4.75rem] max-sm:max-h-[52dvh] sm:max-h-[calc(100dvh-11rem)] sm:w-[400px]" data-testid={`painel-${aba}`}>
                 <div className="mb-2 flex items-center justify-between">
                   <h2 className="font-bold">{NOMES_ABA[aba]}</h2>
                   <button onClick={() => setAba(null)} className="rounded-lg p-1.5 hover:bg-surface-2" aria-label="Fechar painel"><X size={16} /></button>
@@ -404,15 +409,17 @@ function Atendimento({ caso, modo, foco, onSair }: { caso: Caso; modo: Modo; foc
 
           {/* barra inferior: navegação e ações */}
           <nav className="absolute inset-x-0 bottom-0 z-20 flex justify-center p-2 sm:p-3" style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0.5rem)" }}>
-            <div className="vidro flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl p-1.5">
+            <div className="vidro flex max-w-full items-center gap-1 rounded-2xl p-1.5">
+              <div className="flex min-w-0 items-center gap-1 overflow-x-auto">
               {vistas.map((v) => (
                 <button key={v} onClick={() => irPara(v)} className={`flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-[13px] font-medium ${vista === v ? "bg-surface-2 font-semibold" : "hover:bg-surface-2"}`}>
                   <Eye size={14} className="opacity-60" /> {rotuloVista(v)}
                 </button>
               ))}
-              <span className="mx-1 h-6 w-px bg-line" />
-              <button onClick={higienizar} className="flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-[13px] font-semibold hover:bg-surface-2" data-testid="higienizar"><Droplets size={15} /> Higienizar</button>
-              {aprendizado && <button onClick={pedirDica} className="flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-warn hover:bg-surface-2"><Lightbulb size={15} /> Dica</button>}
+              </div>
+              <span className="mx-1 h-6 w-px shrink-0 bg-line" />
+              <button onClick={higienizar} className="flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-[13px] font-semibold hover:bg-surface-2" data-testid="higienizar" aria-label="Higienizar as mãos"><Droplets size={15} /> <span className="max-sm:hidden">Higienizar</span></button>
+              {aprendizado && <button onClick={pedirDica} className="flex shrink-0 items-center gap-1 rounded-xl px-2.5 py-2 text-[13px] font-semibold text-warn hover:bg-surface-2" aria-label="Dica"><Lightbulb size={15} /> <span className="max-sm:hidden">Dica</span></button>}
               <button onClick={() => setConfirmarFim(true)} className="botao-primario shrink-0 !py-2" data-testid="encerrar"><Square size={14} /> Encerrar</button>
             </div>
           </nav>

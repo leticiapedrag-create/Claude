@@ -7,14 +7,11 @@ import { NOME_CENARIO, NOME_COMPETENCIA, NOME_ETAPA, validarCaso, type Caso } fr
 import { armazenamento } from "@/lib/store/armazenamento";
 import { useArmazenamento } from "@/hooks/useArmazenamento";
 import { CASOS_EMBUTIDOS } from "@/data/casos";
+import { salvarArquivo } from "@/lib/plataforma";
+import { BotaoConfirmar } from "@/components/ui/BotaoConfirmar";
 
 function baixar(nome: string, conteudo: string) {
-  const url = URL.createObjectURL(new Blob([conteudo], { type: "application/json" }));
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = nome;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  void salvarArquivo(nome, conteudo);
 }
 
 export default function Casos() {
@@ -126,7 +123,7 @@ function Detalhe({ caso }: { caso: Caso }) {
         <div className="flex flex-wrap gap-2">
           <button className="botao" onClick={() => baixar(`${caso.id}.json`, JSON.stringify(caso, null, 2))}><Download size={16} /> Exportar</button>
           <button className="botao" onClick={() => setEditor(JSON.stringify(caso, null, 2))}><Pencil size={16} /> Editar JSON</button>
-          {personalizado && <button className="botao text-danger" onClick={() => { if (confirm("Remover a versão personalizada deste caso?")) armazenamento.removerCasoPersonalizado(caso.id); }}><Trash2 size={16} /> Remover personalização</button>}
+          {personalizado && <BotaoConfirmar className="botao text-danger" onConfirmar={() => armazenamento.removerCasoPersonalizado(caso.id)}><Trash2 size={16} /> Remover personalização</BotaoConfirmar>}
           <Link className="botao-primario" href={`/simulacao?caso=${caso.id}&modo=osce`}>Simular</Link>
         </div>
       </div>

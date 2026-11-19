@@ -4,6 +4,8 @@ import { Download, Save, Trash2 } from "lucide-react";
 import { armazenamento } from "@/lib/store/armazenamento";
 import { CONFIG_PADRAO, type ConfigProva } from "@/lib/store/config";
 import { aplicarTema, useArmazenamento } from "@/hooks/useArmazenamento";
+import { salvarArquivo } from "@/lib/plataforma";
+import { BotaoConfirmar } from "@/components/ui/BotaoConfirmar";
 
 function Campo({ rotulo, ajuda, children }: { rotulo: string; ajuda?: string; children: React.ReactNode }) {
   return (
@@ -118,8 +120,8 @@ function Formulario({ config, casos, tentativas }: ReturnType<typeof useArmazena
       <section className="cartao flex flex-wrap items-center gap-2 p-5">
         <h2 className="w-full font-bold">Dados</h2>
         <p className="w-full text-xs text-muted">{tentativas.length} atendimento(s) salvos neste navegador. Faça backup antes de limpar o navegador ou trocar de aparelho.</p>
-        <button className="botao" onClick={() => { const url = URL.createObjectURL(new Blob([armazenamento.exportarTudo()], { type: "application/json" })); const a = document.createElement("a"); a.href = url; a.download = "osce-backup.json"; a.click(); }}><Download size={16} /> Exportar backup</button>
-        <button className="botao text-danger" onClick={() => confirm("Apagar todo o histórico de atendimentos?") && armazenamento.limparTentativas()}><Trash2 size={16} /> Apagar histórico</button>
+        <button className="botao" onClick={() => void salvarArquivo("osce-backup.json", armazenamento.exportarTudo())}><Download size={16} /> Exportar backup</button>
+        <BotaoConfirmar className="botao text-danger" pergunta="Toque de novo para apagar tudo" onConfirmar={() => armazenamento.limparTentativas()}><Trash2 size={16} /> Apagar histórico</BotaoConfirmar>
       </section>
     </div>
   );

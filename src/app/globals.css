@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where([data-theme="escuro"], [data-theme="escuro"] *));
+@custom-variant dark (&:where([data-theme="escuro"], [data-theme="escuro"] *, [data-theme="dark"], [data-theme="dark"] *));
 
 :root {
   --navy-950: #06111f;
@@ -26,7 +26,7 @@
   color-scheme: light;
 }
 
-[data-theme="escuro"] {
+[data-theme="escuro"], [data-theme="dark"] {
   --bg: #07111d;
   --surface: #0d1b2c;
   --surface-2: #132539;
@@ -96,7 +96,7 @@ body { font-family: var(--font-sans); -webkit-tap-highlight-color: transparent; 
   --seq-100: #cde2fb; --seq-250: #86b6ef; --seq-400: #3987e5; --seq-550: #1c5cab; --seq-700: #0d366b;
   --grade: #e3e8ee; --eixo: #6b7785; --status-bom: #0ca30c; --status-critico: #d03b3b; --status-alerta: #fab219;
 }
-[data-theme="escuro"] {
+[data-theme="escuro"], [data-theme="dark"] {
   --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70; --series-4: #c98500; --series-5: #d55181; --series-6: #0ca30c;
   --grade: #22374e; --eixo: #93a5b8;
 }
