@@ -219,8 +219,9 @@ export function Paciente({ avatar, estado, posicao, onClick }: Props) {
     } else if (alvoDedo.current) alvoDedo.current.visible = false;
 
     // micro-movimentos naturais da cabeça
-    alvoYaw += ruido(t * 0.35, 7) * 0.05;
-    alvoPitch += ruido(t * 0.3, 11) * 0.03 + (emDor ? -0.12 : 0);
+    const vivacidade = avatar.hipomimia ? 0.35 : 1;
+    alvoYaw += ruido(t * 0.35, 7) * 0.05 * vivacidade;
+    alvoPitch += ruido(t * 0.3, 11) * 0.03 * vivacidade + (emDor ? -0.12 : 0) + (avatar.sonolento ? 0.18 : 0);
     a.cabecaYaw = lerp(a.cabecaYaw, alvoYaw, k(3));
     a.cabecaPitch = lerp(a.cabecaPitch, alvoPitch, k(3));
     if (cabeca.current) {
@@ -241,14 +242,14 @@ export function Paciente({ avatar, estado, posicao, onClick }: Props) {
     a.proximoPiscar -= dt;
     if (a.proximoPiscar <= 0) {
       a.piscar = 0.13;
-      a.proximoPiscar = Math.random() < 0.15 ? 0.25 : 2 + Math.random() * 4.5;
+      a.proximoPiscar = Math.random() < 0.15 ? 0.25 : (avatar.hipomimia ? 5 : 2) + Math.random() * (avatar.hipomimia ? 6 : 4.5);
     }
     a.piscar = Math.max(0, a.piscar - dt);
     const fechamentoPiscar = a.piscar > 0 ? Math.sin((a.piscar / 0.13) * Math.PI) : 0;
     const olhosFechados = tipo === "bracos_estendidos" && ta > 0.8 && ta < 8; // prova com olhos fechados
     const dorSquint = emDor ? 0.45 : 0;
     const ansioso = e.emocao === "ansioso" ? 1 : 0;
-    const fechamento = olhosFechados ? 1 : Math.max(fechamentoPiscar, dorSquint, 0);
+    const fechamento = olhosFechados ? 1 : Math.max(fechamentoPiscar, dorSquint, avatar.sonolento ? 0.55 : 0);
     const anguloPalp = lerp(-0.3, 1.05, fechamento);
     if (palpD.current) palpD.current.rotation.x = anguloPalp;
     if (palpE.current) palpE.current.rotation.x = anguloPalp;
@@ -322,10 +323,13 @@ export function Paciente({ avatar, estado, posicao, onClick }: Props) {
     if (ombroD.current && cotoveloD.current) {
       ombroD.current.rotation.x = lerp(-0.18, -1.5 + quedaBracoD * 0.9, a.bracoD);
       cotoveloD.current.rotation.x = lerp(-1.25, 0, a.bracoD);
+      // tremor de repouso (4–6 Hz), some quando o braço é usado
+      cotoveloD.current.rotation.z = avatar.tremorRepouso === "direita" ? Math.sin(t * Math.PI * 2 * 5) * 0.07 * (1 - a.bracoD) * (tipo === "tremor" ? 1.4 : 1) : 0;
     }
     if (ombroE.current && cotoveloE.current) {
       ombroE.current.rotation.x = lerp(-0.18, -1.5 + a.quedaBracoE * 0.9, a.bracoE);
       cotoveloE.current.rotation.x = lerp(-1.25, 0, a.bracoE) + a.quedaBracoE * 0.2 * a.bracoE;
+      cotoveloE.current.rotation.z = avatar.tremorRepouso === "esquerda" ? Math.sin(t * Math.PI * 2 * 5) * 0.07 * (1 - a.bracoE) * (tipo === "tremor" ? 1.4 : 1) : 0;
       // ferida: antebraço esquerdo em supinação sobre a coxa
       ombroE.current.rotation.z = avatar.ferida === "antebraco_esquerdo" ? -0.12 : 0;
     }

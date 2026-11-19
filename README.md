@@ -59,18 +59,43 @@ npm run lint
 |---|---|
 | Sala 3D navegável (pronto atendimento, sala de procedimentos; consultório, emergência e enfermaria como variações da mesma sala) | Implementado |
 | Paciente 3D animado | Implementado (avatar procedural — ver limitações) |
-| Estação completa de **AVC isquêmico** (anamnese, sinais vitais, exame neurológico, NIHSS, exames, hipóteses, conduta, orientação) | Implementado |
-| Estação cirúrgica de **ferida, assepsia e sutura** | Implementado |
+| **20 estações** — uma para cada tema do resumo de OSCE HAM V, mais feridas/sutura (tabela abaixo) | Implementado |
 | Conversa por texto e voz, transcrição, repetir pergunta, controle de microfone | Implementado (voz depende do navegador) |
 | Exame físico com escolha de **técnica** e avaliação da **sequência** | Implementado |
-| Modos Aprendizado, OSCE e Emergência | Implementados |
+| Modos Aprendizado, OSCE e Emergência (AVC e crise convulsiva com evolução no tempo) | Implementados |
 | Checklist com origem da evidência, erros críticos, revisão manual com justificativa e histórico | Implementado |
 | Relatório com sequência ideal, explicações, macetes, plano de revisão, "Refazer" e "Treinar apenas meus erros", exportação PDF | Implementado |
 | Painel: radar de competências, evolução, tema, mapa de erros, gestão de tempo, meta 31,4/55, histórico | Implementado (apenas dados reais) |
 | Biblioteca de casos: ficha com 14 seções e referências, revisão de conteúdo, edição/importação/exportação em JSON | Implementado |
 | Configurações: pontuação total, meta, nº de estações, valor e tempo por estação, política de erro crítico, qualidade gráfica, tema claro/escuro | Implementado |
-| Outros casos (crise epiléptica, cefaleia, meningite, delirium, Parkinson, diabetes, otite, vertigem, lombalgia, instrumentais) | **Não incluídos** — planejados (Fase 2). Podem ser importados em JSON. |
 | Realidade virtual (WebXR) | **Não implementado** — Fase 3 |
+
+## Estações incluídas
+
+Cada estação segue as perguntas, manobras e condutas do resumo de OSCE HAM V do aluno (semanas indicadas), complementadas por diretrizes citadas na ficha do caso. Todas estão marcadas como **rascunho** até revisão por um docente.
+
+| Semana | Estação | Tema | Destaques |
+|---|---|---|---|
+| 02 | Vozes que ninguém mais ouve | Psicose | Delírios, alucinações, risco auto/hetero, exame do estado mental |
+| 03 | Queda na enfermaria | Segurança do paciente | Fatores intrínsecos/extrínsecos, PA ortostática, lesão por pressão, ambiente |
+| 04 | Dor lombar irradiada para a perna | Lombalgia | Escala 0–10, red flags, Lasègue, Bragard, Patrick-Fabere, Schober |
+| 04 | Dor no pescoço que desce para o braço | Cervicalgia | Spurling, compressão/descompressão, Lhermitte |
+| 05 | Joelho inchado após torção no futebol | Joelho | Gaveta, Lachman, pivot shift, McMurray, sinal da tecla |
+| 05 | Dor súbita no dedão do pé | Artropatia (gota) | Exame comparativo, artrite séptica, artrocentese |
+| 05 | Estalo na panturrilha durante o jogo | Tornozelo | Thompson, falha palpável, flexão do joelho |
+| 06 | Dor no ombro para pentear o cabelo | Ombro | Neer, Hawkins, Yokum, Jobe, Gerber, Patte, Apley, Yergason, Speed |
+| 06 | Dor no cotovelo ao segurar objetos | Cotovelo | Mill, Cozen, epicondilite medial, valgo/varo |
+| 07 | Fraqueza na perna após um susto | Transtorno neurológico funcional | Hoover, teste da cadeira, hemianalgesia, elevação do joelho |
+| 08 | Déficit neurológico súbito no pronto atendimento | AVC | NIHSS, janela terapêutica, trombólise (modo emergência) |
+| 10 | Crise convulsiva na sala de emergência | Crise convulsiva | ABCDE, escalonamento benzodiazepínico → fenitoína (modo emergência) |
+| 11 | Tremor e lentidão no idoso | Parkinson e cuidados paliativos | Finger tapping, rigidez, pull test, TUG, critérios de paliativos |
+| 12 | Tristeza e desesperança | Risco de suicídio | Plano, meios, intenção, estratificação de risco |
+| 14 | Febre, cefaleia e rigidez de nuca | Meningite e punção lombar | Sinais meníngeos, contraindicações, técnica e 4 tubos |
+| 15 | Dor de ouvido depois do resfriado | Otoscopia | Técnica do otoscópio, Weber e Rinne |
+| 15 | Tontura ao virar na cama | Vertigem (VPPB) | Romberg, Dix-Hallpike, Epley, sinais centrais |
+| 16 | Visão embaçada no diabético | Fundoscopia e diabetes | Técnica do oftalmoscópio, achados da retinopatia, monofilamento |
+| 17 | Cansaço, frio e ganho de peso | Distúrbios tireoidianos | Hipo × hiper, sintomas compressivos, etiologia, palpação da tireoide |
+| — | Ferida no antebraço | Feridas e sutura | Assepsia, anestesia, irrigação, sutura, profilaxia antitetânica |
 
 ## Transparência: o que é 3D, o que é externo e o que é simplificado
 
@@ -78,7 +103,7 @@ npm run lint
 - Sala, mobiliário e equipamentos são geometria 3D renderizada em tempo real (Three.js / React Three Fiber). Pia, esfigmomanômetro, oxímetro, termômetro, glicosímetro, lanterna, martelo, estetoscópio, bandeja e monitor são **clicáveis/tocáveis** e abrem as manobras correspondentes.
 - Câmera em primeira pessoa: pontos de vista por toque, arrastar para olhar, WASD/setas no computador.
 - O paciente respira na frequência respiratória do caso, mantém contato visual intercalado com desvios do olhar, pisca em intervalos irregulares, tem micro-movimentos de cabeça, expressão de ansiedade e de dor (em manobras dolorosas) e movimenta a mandíbula ao falar.
-- Achados representados no corpo 3D: **paresia facial** (comissura labial e sorriso assimétrico), **queda do braço** na prova dos braços estendidos, **queda da perna**, **pupilas** que contraem à luz da lanterna (reflexo direto e consensual), **seguimento ocular** em "H", **ferida** no antebraço (coberta por gaze até a inspeção) e respiração.
+- Achados representados no corpo 3D: **tremor de repouso** (Parkinson), **face em máscara**, **sonolência pós-ictal**, **paresia facial** (comissura labial e sorriso assimétrico), **queda do braço** na prova dos braços estendidos, **queda da perna**, **pupilas** que contraem à luz da lanterna (reflexo direto e consensual), **seguimento ocular** em "H", **ferida** no antebraço (coberta por gaze até a inspeção) e respiração.
 - Monitor multiparamétrico com traçado de ECG desenhado em tempo real (irregular na fibrilação atrial) e relógio de parede (hora clínica no modo emergência).
 
 ### Simplificações didáticas (declaradas na interface)
@@ -151,5 +176,5 @@ Listadas na ficha de cada caso e no relatório (AHA/ASA 2019, Linha de Cuidado d
 
 ## Roteiro
 
-- **Fase 2**: mais personagens e casos (lista acima), sala de emergência própria, mais exames, importação de PDFs/roteiros, sincronização em nuvem.
+- **Fase 2**: casos de cefaleia, delirium e instrumentais cirúrgicos, sala de emergência própria, mais exames, importação de PDFs/roteiros, sincronização em nuvem.
 - **Fase 3**: modelos 3D licenciados com morph targets faciais (sincronização labial por visemas), animações clínicas específicas (marcha, crise), interação com objetos 3D (pegar o estetoscópio), WebXR para headsets, cenários dinâmicos.

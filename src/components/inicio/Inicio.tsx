@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { BookOpen, Clock, GraduationCap, Siren, Stethoscope, Timer } from "lucide-react";
+import { useState } from "react";
+import { BookOpen, Clock, GraduationCap, Search, Siren, Stethoscope, Timer } from "lucide-react";
 import { NOME_CENARIO, type Caso } from "@/lib/caso/schema";
 import { avaliar } from "@/lib/engine/avaliacao";
 import { useArmazenamento } from "@/hooks/useArmazenamento";
@@ -12,9 +13,17 @@ export default function Inicio() {
     if (!ts.length) return null;
     return Math.max(...ts.map((t) => avaliar(t.caso, t.registro, { revisoes: t.revisoes }).pct));
   };
+  const [busca, setBusca] = useState("");
+  const [area, setArea] = useState<"todas" | "clinica" | "cirurgica">("todas");
+  const termo = busca.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const filtrados = casos.filter((c) => {
+    if (area !== "todas" && c.area !== area) return false;
+    if (!termo) return true;
+    return [c.titulo, c.tema, c.especialidade].join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(termo);
+  });
   const grupos: [string, Caso[]][] = [
-    ["Estações clínicas", casos.filter((c) => c.area === "clinica")],
-    ["Estações de clínica cirúrgica", casos.filter((c) => c.area === "cirurgica")],
+    ["Estações clínicas", filtrados.filter((c) => c.area === "clinica")],
+    ["Estações de clínica cirúrgica", filtrados.filter((c) => c.area === "cirurgica")],
   ];
   return (
     <div className="space-y-8">
@@ -30,7 +39,20 @@ export default function Inicio() {
         </div>
       </section>
 
-      {grupos.map(([titulo, lista]) => (
+      <div className="flex flex-wrap items-center gap-2">
+        <label className="flex min-w-60 flex-1 items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2">
+          <Search size={16} className="text-muted" />
+          <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="Buscar tema (ex.: ombro, AVC, tireoide)" className="w-full bg-transparent text-sm outline-none" aria-label="Buscar estação" />
+        </label>
+        <div className="inline-flex rounded-xl border border-line bg-surface p-0.5" role="radiogroup" aria-label="Área">
+          {([["todas", "Todas"], ["clinica", "Clínicas"], ["cirurgica", "Cirúrgicas"]] as const).map(([v, r]) => (
+            <button key={v} role="radio" aria-checked={area === v} onClick={() => setArea(v)} className={`rounded-lg px-3 py-1.5 text-[13px] font-medium ${area === v ? "bg-navy text-white dark:bg-accent dark:text-accent-contrast" : "text-muted hover:text-ink"}`}>{r}</button>
+          ))}
+        </div>
+        <span className="text-xs text-muted">{filtrados.length} de {casos.length} estações</span>
+      </div>
+
+      {grupos.filter(([, lista]) => lista.length || !termo).map(([titulo, lista]) => (
         <section key={titulo}>
           <h2 className="mb-3 text-lg font-bold">{titulo}</h2>
           {lista.length === 0 ? (
@@ -45,6 +67,7 @@ export default function Inicio() {
                     <p className="rotulo">{c.especialidade} · {NOME_CENARIO[c.cenario]}</p>
                     <h3 className="mt-1 text-lg font-bold leading-snug">{c.titulo}</h3>
                     <p className="mt-1 line-clamp-3 text-sm text-muted">{c.enunciado}</p>
+                    <p className="mt-2 text-xs font-semibold text-accent">{c.tema}</p>
                     <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted">
                       <span className="inline-flex items-center gap-1"><Clock size={13} /> {tempo} min</span>
                       <span className="inline-flex items-center gap-1"><Stethoscope size={13} /> {c.manobras.length} manobras · {c.exames.length} exames</span>

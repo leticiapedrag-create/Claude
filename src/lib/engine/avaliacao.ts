@@ -177,6 +177,7 @@ export function avaliar(
       ocorreu = !!d && g.requer.some((req) => !feito(req, d.t));
     }
     if (g.tipo === "omissao_fatos") ocorreu = !g.fatos.some((f) => fatosTexto.has(f) || fatosIA.has(f));
+    if (g.tipo === "omissao_acoes") ocorreu = !g.acoes.some((a) => primeiraAcao(a));
     if (g.tipo === "sequencia") {
       const a = primeiraAcao(g.antes);
       const d = primeiraAcao(g.depois);

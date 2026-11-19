@@ -77,7 +77,7 @@ export default function Casos() {
       <div className="cartao p-5 text-sm">
         <h2 className="mb-1 font-bold">Formato de importação</h2>
         <p className="text-muted">Baixe o modelo, edite e importe. O arquivo é validado: ids de fatos, manobras, exames e opções citados no checklist precisam existir. Critérios aceitos: <code>fatos</code>, <code>intencao</code>, <code>acao</code>, <code>decisao</code>, <code>sequencia</code>, <code>nihss</code> e <code>manual</code> (sempre exige revisão humana). Um caso importado com o mesmo id de um embutido o substitui neste dispositivo.</p>
-        <p className="mt-2 text-muted">Planejados para as próximas fases (ainda não incluídos): crise epiléptica, cefaleia, meningite, delirium, Parkinson, diabetes, otite/otoscopia, vertigem, lombalgia/radiculopatia, instrumentais cirúrgicos.</p>
+        <p className="mt-2 text-muted">A biblioteca cobre os temas do resumo de OSCE HAM V (semanas 02 a 17), mais feridas e sutura. Ainda não incluídos: cefaleia, delirium e identificação de instrumentais cirúrgicos.</p>
       </div>
     </div>
   );

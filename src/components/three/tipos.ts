@@ -59,6 +59,7 @@ export const DURACAO_VISUAL: Record<Visual, number> = {
   perna_estendida: 7000,
   ferida: 2500,
   respiracao: 4000,
+  tremor: 5000,
 };
 
 /** Ponto de vista sugerido para observar cada achado. */
@@ -70,4 +71,5 @@ export const VISTA_DO_VISUAL: Record<Visual, PontoVista> = {
   perna_estendida: "paciente",
   ferida: "membro",
   respiracao: "paciente",
+  tremor: "paciente",
 };

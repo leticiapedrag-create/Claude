@@ -55,6 +55,7 @@ export const VISUAIS = [
   "perna_estendida",
   "ferida",
   "respiracao",
+  "tremor",
 ] as const;
 export type Visual = (typeof VISUAIS)[number];
 
@@ -151,6 +152,8 @@ export const RegraErroCriticoSchema = z.discriminatedUnion("tipo", [
   z.object({ tipo: z.literal("decisao_sem_requisito"), opcao: z.string(), requer: z.array(z.string()).min(1) }),
   /** Encerrar sem ter liberado nenhum destes fatos. */
   z.object({ tipo: z.literal("omissao_fatos"), fatos: z.array(z.string()).min(1) }),
+  /** Encerrar sem ter realizado nenhuma destas ações (com técnica adequada). */
+  z.object({ tipo: z.literal("omissao_acoes"), acoes: z.array(z.string()).min(1) }),
   /** Executar a ação "depois" antes da ação "antes". */
   z.object({ tipo: z.literal("sequencia"), antes: z.string(), depois: z.string() }),
   /** Modo emergência: decisão tomada após o limite do relógio clínico (min desde a chegada). */
@@ -221,6 +224,12 @@ export const AvatarSchema = z.object({
   emocao: z.enum(["neutro", "ansioso", "dor", "triste"]).default("neutro"),
   /** Fala arrastada simulada na síntese de voz (mais lenta). */
   disartria: z.boolean().default(false),
+  /** Tremor de repouso contínuo na mão (parkinsonismo). */
+  tremorRepouso: z.enum(["nenhum", "direita", "esquerda"]).default("nenhum"),
+  /** Pálpebras pesadas e pouca movimentação (pós-ictal, sedação). */
+  sonolento: z.boolean().default(false),
+  /** Face em máscara: menos piscadas e expressões. */
+  hipomimia: z.boolean().default(false),
 });
 export type Avatar = z.infer<typeof AvatarSchema>;
 
@@ -331,6 +340,7 @@ export function verificarReferencias(c: Caso): string[] {
     if ("opcao" in r && !opcoes.has(r.opcao)) erros.push(`erro crítico ${e.id}: opção inexistente "${r.opcao}"`);
     if (r.tipo === "decisao_sem_requisito") r.requer.forEach((a) => !existeAcao(a) && erros.push(`erro crítico ${e.id}: requisito inexistente "${a}"`));
     if (r.tipo === "omissao_fatos") r.fatos.forEach((f) => !fatos.has(f) && erros.push(`erro crítico ${e.id}: fato inexistente "${f}"`));
+    if (r.tipo === "omissao_acoes" || r.tipo === "sequencia") ("acoes" in r ? r.acoes : [r.antes, r.depois]).forEach((a) => !existeAcao(a) && erros.push(`erro crítico ${e.id}: ação inexistente "${a}"`));
   }
   return erros;
 }
