@@ -245,7 +245,7 @@ export const casoSuicidio: CasoEntrada = {
     orientacoes: "CVV 188, SAMU 192, CAPS; esperança no tratamento; limites do sigilo explicados com empatia.",
     sinaisAlerta: ["Plano + intenção + meios", "Despedidas, organização de pertences", "Melhora súbita sem motivo"],
     sequenciaIdeal: ["Apresentação, identidade, privacidade e acolhimento", "Sintomas depressivos e impacto", "Perguntar diretamente sobre morte e suicídio", "Plano, meios, intenção, quando", "Tentativas prévias", "Fatores de risco e proteção", "Estratificar o risco", "Conduta de proteção e rede de apoio"],
-    explicacoes: ["Baixo risco: ideação sem plano (ambulatorial). Médio: plano pouco estruturado (avaliação especializada). Alto: plano + intenção + meios (vigilância contínua e internação urgente).", "Perguntar sobre suicídio não induz o suicídio."],
+    explicacoes: ["Baixo risco: ideação sem plano (ambulatorial). Médio: plano pouco estruturado (avaliação especializada). Alto: plano + intenção + meios (vigilância contínua e internação urgente).", "Perguntar sobre suicídio não induz o suicídio.", "Pela aula: risco baixo = pensamentos sem plano e sem tentativa; médio = pensamentos e planos, sem intenção imediata; alto = plano definido, meios e intenção (não deixar a pessoa sozinha; informar a família mesmo sem permissão).", "Plano de segurança por escrito, com contatos de apoio (pelo menos 5 pessoas); tentativa de suicídio é de notificação compulsória."],
     macetes: ["'PIM' de alto risco: Plano, Intenção, Meios.", "Frase de acolhimento: 'Percebo que você está passando por um momento difícil e gostaria de entender melhor.'"],
     referencias: [
       { citacao: "Resumo OSCE — HAM V, Semana 12: manejo do paciente com tendências suicidas (material do aluno)." },
@@ -373,7 +373,7 @@ export const casoQuedas: CasoEntrada = {
     orientacoes: "Levantar devagar, chamar ajuda, usar apoio, óculos e calçado fechado; explicar a prevenção de lesão por pressão.",
     sinaisAlerta: ["Trauma craniano ou dor no quadril após queda", "Lesão por pressão progredindo (bolha, perda de pele)"],
     sequenciaIdeal: ["Abordagem inicial", "Circunstância da queda e lesões", "Fatores intrínsecos", "Fatores extrínsecos", "Fatores de risco de lesão por pressão", "Higiene; PA ortostática, trauma, pele, TUG", "Avaliar o ambiente", "Plano de prevenção, notificação e orientações"],
-    explicacoes: ["Intrínsecos: idade, visão, tontura, demência, fraqueza, quedas prévias. Extrínsecos: piso, iluminação, tapetes, obstáculos, calçado.", "Lesão por pressão: sacro, calcâneos, trocânteres, maléolos, occipital. Estágio 1 = eritema não branqueável com pele íntegra."],
+    explicacoes: ["Intrínsecos: idade, visão, tontura, demência, fraqueza, quedas prévias. Extrínsecos: piso, iluminação, tapetes, obstáculos, calçado.", "Lesão por pressão: sacro, calcâneos, trocânteres, maléolos, occipital. Estágio 1 = eritema não branqueável com pele íntegra.", "Prevenir quedas é a meta 6 das metas internacionais de segurança do paciente; a identificação correta (nome e data de nascimento) é a meta 1.", "Incidente que causa dano é evento adverso; eventos que evoluem para óbito são notificados pelo Núcleo de Segurança do Paciente em até 72 h."],
     macetes: ["Frase para a paciente: 'Para diminuir o risco de quedas, levante-se devagar, use apoio e mantenha o ambiente iluminado.'", "Mudança de decúbito a cada 2 horas."],
     referencias: [
       { citacao: "Resumo OSCE — HAM V, Semana 03: segurança do paciente (material do aluno)." },

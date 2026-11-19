@@ -210,6 +210,9 @@ export const casoFerida: CasoEntrada = {
       "Profilaxia do tétano (ferimento limpo e superficial): esquema completo com último reforço há mais de 10 anos → vacina dT; soro/imunoglobulina só em ferimentos de alto risco com esquema incompleto ou desconhecido, conforme o Ministério da Saúde.",
       "Dose máxima de lidocaína: 4,5 mg/kg sem vasoconstritor e 7 mg/kg com vasoconstritor. Lidocaína 1% = 10 mg/mL.",
       "Pontos simples separados permitem retirar um ponto isolado em caso de infecção e favorecem a eversão das bordas.",
+      "Contaminação (aula): limpo-contaminado se atendido em até 6 h sem sujeira grosseira; contaminado após 6 h, ou com terra, fezes ou mordedura. Ferida por prego não se sutura (risco de tétano).",
+      "Retirada dos pontos: face precocemente; demais regiões até o 14º dia; intradérmica pode ficar até 21 dias.",
+      "Outros pontos: Donatti (U vertical) quando o simples não aproxima bem; ponto em X é hemostático.",
     ],
     macetes: [
       "Antissepsia: 'de dentro para fora, nunca volta'.",

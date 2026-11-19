@@ -290,6 +290,8 @@ export const casoGota: CasoEntrada = {
       "Gota: início súbito, sinais inflamatórios intensos, hálux (podagra), episódios prévios que resolvem sozinhos.",
       "O ácido úrico pode estar normal na crise; o diagnóstico definitivo é a presença de cristais de urato.",
       "Tiazídicos elevam o urato; losartana tem efeito uricosúrico.",
+      "Escore diagnóstico (aula): sexo masculino 2; crise prévia 2; instalação em 1 dia 0,5; hiperemia 1; 1ª metatarsofalângica 2,5; HAS ou doença cardiovascular 1,5; ácido úrico > 5,88 3,5. ≤ 4 baixa, ≥ 8 alta probabilidade.",
+      "Monoartrite aguda: puncionar para afastar artrite séptica; cristais em agulha com birrefringência negativa confirmam gota.",
     ],
     macetes: ["Gota: agulha, birrefringência negativa. Pseudogota: romboide, positiva.", "Monoartrite aguda = afastar artrite séptica sempre."],
     referencias: [...REF_ART, { citacao: "FitzGerald JD et al. 2020 American College of Rheumatology Guideline for the Management of Gout. Arthritis Care Res. 2020;72:744–760.", url: "https://doi.org/10.1002/acr.24180" }],

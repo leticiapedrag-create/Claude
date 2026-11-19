@@ -9,6 +9,7 @@ import { casoOtite, casoVertigem, casoFundoscopia, casoTireoide } from "./sentid
 import { casoPsicose, casoSuicidio, casoQuedas } from "./mental-seguranca";
 import { casoAgitado, casoEncefalopatia, casoCAD, casoAutomedicacao } from "./clinica-extra";
 import { casoNR32, casoParamentacao, casoAntissepsia, casoInstrumentacao, casoAnestesiaLocal, casoSuturaContinua, casoHemostasia } from "./cirurgica-a";
+import { casoDDQ, casoPosicionamento, casoFiosNos, casoEstruturaCC } from "./aulas";
 import { casoFeridaPO, casoIOT, casoLPP, casoPuncaoVenosa, casoAbscesso, casoDorPO, casoCirurgiaSegura, casoTCLE } from "./cirurgica-b";
 
 const clinica = (c: CasoEntrada, ...numeros: number[]): CasoEntrada => ({ ...c, programa: numeros.map((numero) => ({ bloco: "clinica" as const, numero })) });
@@ -27,6 +28,7 @@ export const CASOS_EMBUTIDOS: Caso[] = [
   clinica(casoAquiles, 4),
   clinica(casoOmbro, 5),
   clinica(casoCotovelo, 4),
+  casoDDQ, // 04
   clinica(casoFuncional, 6),
   clinica(casoAVC, 7),
   casoAgitado, // 08
@@ -42,11 +44,14 @@ export const CASOS_EMBUTIDOS: Caso[] = [
   clinica(casoTireoide, 15),
   casoAutomedicacao, // 16
   casoNR32,
+  casoEstruturaCC, // 01
   casoParamentacao,
+  casoPosicionamento, // 03
   casoAntissepsia,
   casoInstrumentacao,
   casoAnestesiaLocal,
   { ...casoFerida, programa: [{ bloco: "cirurgica", numero: 6 }] },
+  casoFiosNos, // 06
   casoSuturaContinua,
   casoHemostasia,
   casoFeridaPO,

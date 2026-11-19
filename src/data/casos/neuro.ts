@@ -294,7 +294,8 @@ export const casoConvulsao: CasoEntrada = {
     explicacoes: [
       "Mordedura LATERAL da língua, liberação esfincteriana e pós-ictal favorecem crise epiléptica sobre síncope.",
       "A maioria das crises dura < 2 min e cessa sozinha: não precisa de medicação, só investigação.",
-      "Diazepam 10 mg EV = 1 ampola sem diluir. Fenitoína 20 mg/kg em infusão lenta (máx. 50 mg/min).",
+      "Diazepam 10 mg EV = 1 ampola sem diluir. Fenitoína 15–20 mg/kg diluída em SF 0,9% (nunca em soro glicosado, precipita), máx. 50 mg/min (20–25 mg/min no idoso), com monitorização cardíaca. Fenobarbital 20 mg/kg como alternativa.",
+      "Estado de mal epiléptico: crise > 5 min ou crises repetidas sem recuperar a consciência entre elas.",
     ],
     macetes: ["Escada do estado de mal: 'Benzo, Benzo, Fenitoína, Fenobarbital, Tubo'.", "Causas: 'MITTVM' — Metabólicas, Infecciosas, Traumáticas, Tóxicas, Vasculares, Medicamentos."],
     referencias: [

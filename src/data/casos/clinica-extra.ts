@@ -120,11 +120,12 @@ export const casoAgitado: CasoEntrada = {
     orientacoes: "Família e encaminhamento ao CAPS AD; registro detalhado de qualquer contenção.",
     sinaisAlerta: ["Hipertermia > 39 °C, rabdomiólise, dor torácica, convulsão", "Rebaixamento após sedação"],
     sequenciaIdeal: ["Segurança do ambiente e equipe", "Apresentação e desescalonamento verbal", "Escuta e investigação", "Glicemia, sinais vitais e exame dirigido", "Avaliar risco", "Escalonar: oral → IM → contenção mecânica (último recurso)", "Monitorizar, registrar e reavaliar"],
-    explicacoes: ["Desescalonamento: voz calma, ouvir, validar, oferecer escolhas, limites claros.", "Na intoxicação por cocaína, benzodiazepínico é a escolha para agitação e para os efeitos simpatomiméticos.", "Contenção mecânica: equipe de 5, posição segura, monitorização, reavaliação frequente, registro."],
+    explicacoes: ["Desescalonamento: voz calma, ouvir, validar, oferecer escolhas, limites claros.", "Pela aula: sempre do menos para o mais invasivo — verbal → via oral (efeito em ~60 min, exige colaboração) → IM (~30 min) → contenção física. Medicação EV não é recomendada.", "Surto psicótico: haloperidol 5 mg + prometazina 25 mg IM, podendo repetir o haloperidol até 5 vezes a cada 30 min. Abstinência alcoólica: benzodiazepínico (diazepam).", "Contenção física sempre com medicação, sinais vitais a cada 15 min na 1ª hora e a cada 30 min nas 4 horas seguintes; liberar assim que o paciente estiver tranquilo.", "Na intoxicação por cocaína, benzodiazepínico é a escolha para agitação e para os efeitos simpatomiméticos.", "Contenção mecânica: equipe de 5, posição segura, monitorização, reavaliação frequente, registro."],
     macetes: ["Escada: 'Fala → Oral → IM → Contenção'.", "Sempre glicemia e oximetria no agitado."],
     referencias: [
       { citacao: "Baldaçara L et al. Brazilian guidelines for the management of psychomotor agitation. Part 1. Non-pharmacological approach. Braz J Psychiatry. 2019;41(2):153–167." },
       { citacao: "Baldaçara L et al. Brazilian Psychiatric Association guidelines for the management of psychomotor agitation. Part 2: pharmacological approach. Braz J Psychiatry. 2021." },
+      { citacao: "Nardi AE, Silva AG, Quevedo J. Tratado de psiquiatria da Associação Brasileira de Psiquiatria. Porto Alegre: Artmed, 2021." },
     ],
   },
   dicas: { abertura: ["Fique entre o paciente e a porta e chame a equipe antes de se aproximar."], decisao: ["Cocaína: benzodiazepínico."] },

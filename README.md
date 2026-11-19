@@ -59,7 +59,7 @@ npm run lint
 |---|---|
 | Sala 3D navegável (pronto atendimento, sala de procedimentos; consultório, emergência e enfermaria como variações da mesma sala) | Implementado |
 | Paciente 3D animado | Implementado (avatar procedural — ver limitações) |
-| **39 estações** — pelo menos uma para cada um dos 32 assuntos de HAM 5 Práticas (tabela abaixo), com filtro N1/N2/N3 | Implementado |
+| **43 estações** — pelo menos uma para cada um dos 32 assuntos de HAM 5 Práticas (tabela abaixo), com filtro N1/N2/N3 | Implementado |
 | **Simulado de prova** — sorteia 3 clínicas + 3 cirúrgicas do nível e soma na escala de 55 pontos | Implementado |
 | Conversa por texto e voz, transcrição, repetir pergunta, controle de microfone | Implementado (voz depende do navegador) |
 | Exame físico com escolha de **técnica** e avaliação da **sequência** | Implementado |
@@ -73,7 +73,7 @@ npm run lint
 
 ## Estações incluídas
 
-São 39 estações, organizadas pela lista de assuntos do 5º período (HAM 5 Práticas). Cada assunto dos dois blocos tem pelo menos uma estação, e cada cartão mostra o número do assunto. Os níveis seguem a lista: **N1** = assuntos 01 a 07, **N2** = 01 a 12 (inclui a N1), **N3** = 13 a 16.
+São 43 estações, organizadas pela lista de assuntos do 5º período (HAM 5 Práticas). Cada assunto dos dois blocos tem pelo menos uma estação, e cada cartão mostra o número do assunto. Os níveis seguem a lista: **N1** = assuntos 01 a 07, **N2** = 01 a 12 (inclui a N1), **N3** = 13 a 16.
 
 Os roteiros seguem o resumo de OSCE HAM V do aluno e as diretrizes citadas na ficha de cada caso. São casos demonstrativos, não estações oficiais da Afya, e ficam marcados como **rascunho** até a revisão de um docente.
 
@@ -84,7 +84,7 @@ Os roteiros seguem o resumo de OSCE HAM V do aluno e as diretrizes citadas na fi
 | 01 | Entrevista em Saúde Mental | N1, N2 | Vozes que ninguém mais ouve |
 | 02 | Segurança do Paciente | N1, N2 | Queda na enfermaria |
 | 03 | Exame do Paciente com Dor | N1, N2 | Dor lombar irradiada para a perna; Dor no pescoço que desce para o braço |
-| 04 | Exame do Paciente com Artropatia | N1, N2 | Joelho inchado após torção no futebol; Dor súbita no dedão do pé; Estalo na panturrilha durante o jogo; Dor no cotovelo ao segurar objetos |
+| 04 | Exame do Paciente com Artropatia | N1, N2 | Joelho inchado após torção no futebol; Dor súbita no dedão do pé; Estalo na panturrilha durante o jogo; Dor no cotovelo ao segurar objetos; Consulta de puericultura: quadril do bebê |
 | 05 | Exame do Ombro no Idoso | N1, N2 | Dor no ombro para pentear o cabelo |
 | 06 | Manejo de Desordens Neurológicas Não Orgânicas | N1, N2 | Fraqueza na perna após um susto |
 | 07 | Avaliação do Quadro Neurológico Isquêmico Agudo | N1, N2 | Déficit neurológico súbito no pronto atendimento (modo emergência) |
@@ -102,12 +102,12 @@ Os roteiros seguem o resumo de OSCE HAM V do aluno e as diretrizes citadas na fi
 
 | Nº | Assunto | Nível | Estação(ões) |
 |---|---|---|---|
-| 01 | NR 32 e Normas de Biossegurança | N1, N2 | Picada de agulha na enfermaria |
+| 01 | NR 32 e Normas de Biossegurança | N1, N2 | Picada de agulha na enfermaria; Primeiro dia no centro cirúrgico |
 | 02 | Escovação, Paramentação e Desparamentação | N1, N2 | Escovação e paramentação cirúrgica |
-| 03 | Antissepsia e Campos Cirúrgicos | N1, N2 | Preparo do campo operatório |
+| 03 | Antissepsia e Campos Cirúrgicos | N1, N2 | Montando a equipe e posicionando o paciente; Preparo do campo operatório |
 | 04 | Instrumentação Cirúrgica | N1, N2 | Montagem da mesa de instrumentação |
 | 05 | Técnica de Anestesia Local | N1, N2 | Anestesia local para retirada de lipoma |
-| 06 | Manuseio de Instrumental e Sutura Interrompida | N1, N2 | Ferida no antebraço: avaliação, assepsia e sutura |
+| 06 | Manuseio de Instrumental e Sutura Interrompida | N1, N2 | Ferida no antebraço: avaliação, assepsia e sutura; Fechando a laparotomia por planos |
 | 07 | Sutura Contínua | N1, N2 | Fechamento de pele com sutura contínua |
 | 08 | Modalidades de Hemostasia | N2 | Ferida sangrante no couro cabeludo |
 | 09 | Cuidados com Ferida Pós-operatória | N2 | Ferida operatória com secreção |
@@ -118,6 +118,10 @@ Os roteiros seguem o resumo de OSCE HAM V do aluno e as diretrizes citadas na fi
 | 14 | Manejo da Dor Pós-operatória | N3 | Dor no primeiro dia de pós-operatório |
 | 15 | Protocolo de Cirurgia Segura | N3 | Lista de verificação na sala operatória |
 | 16 | TCLE e Revisão de Procedimentos | N3 | Consentimento para colecistectomia |
+
+### Alinhamento com as aulas
+
+As aulas enviadas pelo aluno (Centro Cirúrgico 1, Clínica Cirúrgica 1 e HAM V) foram usadas para revisar as estações e criar quatro novas: displasia do desenvolvimento do quadril, equipe e posicionamento do paciente, agulhas/fios/nós e estrutura física do centro cirúrgico. Nas estações revisadas (paramentação, antissepsia e campos, instrumentação, anestesia local, agitação, crise epiléptica, risco de suicídio, gota, ferida e segurança do paciente), as técnicas, sequências e explicações seguem o que as aulas ensinam, e as fichas citam as referências das próprias aulas.
 
 ## Simulado de prova
 
