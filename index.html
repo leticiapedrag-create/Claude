@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador OSCE</title>
+  <meta name="description" content="Treine estações OSCE com pacientes virtuais, cronômetro e checklist de avaliação.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" data-acao="inicio" aria-label="Ir para o início">🩺 <span>Simulador OSCE</span></button>
+    <div class="topbar-dir">
+      <label class="toggle" title="O paciente lê as respostas em voz alta">
+        <input type="checkbox" id="opt-voz"> <span>🔊 Voz do paciente</span>
+      </label>
+    </div>
+  </header>
+  <main id="app" tabindex="-1"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/cases.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
