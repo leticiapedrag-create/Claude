@@ -5,6 +5,7 @@ import { verificarReferencias } from "@/lib/caso/schema";
 import { interpretar, normalizar } from "@/lib/engine/conversa";
 import { Sessao } from "@/lib/engine/sessao";
 import { avaliar } from "@/lib/engine/avaliacao";
+import { ASSUNTOS, casoNoNivel, sortearSimulado } from "@/lib/programa";
 
 /** Uma pergunta que libera o fato: a primeira expressão-gatilho que o motor associa a ele. */
 function perguntaPara(caso: (typeof CASOS_EMBUTIDOS)[number], fatoId: string) {
@@ -37,8 +38,9 @@ describe.each(CASOS_EMBUTIDOS.map((c) => [c.id, c] as const))("%s", (_, caso) =>
     for (const f of caso.fatos) p(perguntaPara(caso, f.id)! + "?");
     p("Vou te examinar, posso?");
     s.higienizar((t += 1000));
-    for (const m of caso.manobras) s.examinar(m.id, m.tecnicas.find((x) => x.correta)!.id, (t += 1000));
+    // Exames antes das manobras: algumas estações exigem um exame antes de um procedimento (ex.: TC antes da punção lombar).
     for (const e of caso.exames.filter((x) => x.indicado)) s.solicitar(e.id, (t += 1000));
+    for (const m of caso.manobras) s.examinar(m.id, m.tecnicas.find((x) => x.correta)!.id, (t += 1000));
     if (caso.nihss) s.registrarNihss(Object.fromEntries(caso.nihss.map((i) => [i.id, i.correto])), (t += 1000));
     for (const campo of ["hipotese", "diferenciais", "janela", "conduta", "orientacoes"] as const) {
       const certas = caso.decisoes[campo].filter((o) => o.correta).map((o) => o.id);
@@ -58,4 +60,29 @@ it("a biblioteca cobre os temas do resumo de HAM V", () => {
   const temas = CASOS_EMBUTIDOS.map((c) => c.tema);
   for (const t of ["Psicose", "Segurança do paciente", "Lombalgia", "Cervicalgia", "Joelho", "Ombro", "Cotovelo", "Transtorno neurológico funcional", "AVC", "Crise convulsiva", "Parkinson e cuidados paliativos", "Manejo do paciente com tendência suicida", "Meningite e punção lombar", "Otoscopia", "Vertigem", "Fundoscopia e diabetes", "Distúrbios tireoidianos"])
     expect(temas).toContain(t);
+});
+
+describe("programa HAM 5 práticas", () => {
+  it("cada assunto dos dois blocos tem ao menos uma estação, na área correta", () => {
+    for (const bloco of ["clinica", "cirurgica"] as const)
+      ASSUNTOS[bloco].forEach((_, i) => {
+        const numero = i + 1;
+        const casos = CASOS_EMBUTIDOS.filter((c) => c.area === bloco && c.programa.some((p) => p.bloco === bloco && p.numero === numero));
+        expect(casos.length, `${bloco} ${numero}`).toBeGreaterThan(0);
+      });
+  });
+
+  it("o simulado sorteia 3 clínicas e 3 cirúrgicas de assuntos distintos dentro do nível", () => {
+    for (const nivel of ["N1", "N2", "N3"] as const)
+      for (let semente = 1; semente <= 20; semente++) {
+        let x = semente;
+        const aleatorio = () => ((x = (x * 9301 + 49297) % 233280) / 233280);
+        const sim = sortearSimulado(CASOS_EMBUTIDOS, nivel, 3, aleatorio);
+        expect(sim.filter((c) => c.area === "clinica")).toHaveLength(3);
+        expect(sim.filter((c) => c.area === "cirurgica")).toHaveLength(3);
+        for (const c of sim) expect(casoNoNivel(c, nivel)).toBe(true);
+        const numeros = sim.map((c) => `${c.area}${c.programa.find((p) => p.bloco === c.area)!.numero}`);
+        expect(new Set(numeros).size).toBe(6);
+      }
+  });
 });

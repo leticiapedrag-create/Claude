@@ -276,6 +276,10 @@ export const CasoSchema = z.object({
     conduta: z.array(OpcaoSchema).min(2),
     orientacoes: z.array(OpcaoSchema).default([]),
   }),
+  /** Rótulos próprios para os campos de decisão (ex.: estações de procedimento). */
+  rotulosDecisao: z.partialRecord(z.enum(["hipotese", "diferenciais", "janela", "conduta", "orientacoes"]), z.string()).default({}),
+  /** Assunto(s) do programa da disciplina que a estação treina (ex.: Clínica 08). */
+  programa: z.array(z.object({ bloco: z.enum(["clinica", "cirurgica"]), numero: z.number().int().min(1) })).default([]),
   checklist: z.array(ItemChecklistSchema).min(1),
   errosCriticos: z.array(ErroCriticoSchema).default([]),
   evolucao: EvolucaoSchema.optional(),

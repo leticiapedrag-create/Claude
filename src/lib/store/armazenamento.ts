@@ -7,13 +7,26 @@ import type { RevisaoManual } from "@/lib/engine/avaliacao";
 import type { RegistroSessao } from "@/lib/engine/sessao";
 import { CONFIG_PADRAO, type ConfigProva } from "./config";
 import { CASOS_EMBUTIDOS } from "@/data/casos";
+import { sortearSimulado, type Nivel } from "@/lib/programa";
 
 const K = {
   tentativas: "osce.v2.tentativas",
   config: "osce.v2.config",
   casos: "osce.v2.casos",
   emAndamento: "osce.v2.em-andamento",
+  simulados: "osce.v2.simulados",
 };
+
+/** Simulado de prova: estações sorteadas de um nível, feitas em sequência no modo OSCE. */
+export interface Simulado {
+  id: string;
+  nivel: Nivel;
+  criadoEm: string;
+  /** Ids dos casos, na ordem de realização (clínicas e depois cirúrgicas). */
+  casos: string[];
+  /** caso → tentativa realizada dentro do simulado. */
+  tentativas: Record<string, string>;
+}
 
 export interface Tentativa {
   registro: RegistroSessao;
@@ -91,7 +104,27 @@ export const armazenamento = {
   limparTentativas() {
     gravar(K.tentativas, []);
   },
+  simulados(): Simulado[] {
+    return ler<Simulado[]>(K.simulados, []);
+  },
+  simulado(id: string) {
+    return this.simulados().find((s) => s.id === id);
+  },
+  /** Sorteia e grava um simulado do nível; devolve undefined se não houver estações suficientes. */
+  criarSimulado(nivel: Nivel, porBloco = 3): Simulado | undefined {
+    const casos = sortearSimulado(this.todosCasos(), nivel, porBloco);
+    if (casos.length < porBloco * 2) return undefined;
+    const sim: Simulado = { id: `sim-${Date.now().toString(36)}`, nivel, criadoEm: new Date().toISOString(), casos: casos.map((c) => c.id), tentativas: {} };
+    gravar(K.simulados, [...this.simulados(), sim].slice(-50));
+    return sim;
+  },
+  registrarNoSimulado(simuladoId: string, casoId: string, tentativaId: string) {
+    gravar(K.simulados, this.simulados().map((s) => (s.id === simuladoId && s.casos.includes(casoId) ? { ...s, tentativas: { ...s.tentativas, [casoId]: tentativaId } } : s)));
+  },
+  removerSimulado(id: string) {
+    gravar(K.simulados, this.simulados().filter((s) => s.id !== id));
+  },
   exportarTudo() {
-    return JSON.stringify({ versao: 2, exportadoEm: new Date().toISOString(), config: this.config(), casos: this.casosPersonalizados(), tentativas: this.tentativas() }, null, 2);
+    return JSON.stringify({ versao: 2, exportadoEm: new Date().toISOString(), config: this.config(), casos: this.casosPersonalizados(), tentativas: this.tentativas(), simulados: this.simulados() }, null, 2);
   },
 };

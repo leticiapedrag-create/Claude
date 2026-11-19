@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { BookOpen, Clock, GraduationCap, Search, Siren, Stethoscope, Timer } from "lucide-react";
+import { BookOpen, Clock, GraduationCap, ListChecks, Search, Siren, Stethoscope, Timer } from "lucide-react";
 import { NOME_CENARIO, type Caso } from "@/lib/caso/schema";
 import { avaliar } from "@/lib/engine/avaliacao";
 import { useArmazenamento } from "@/hooks/useArmazenamento";
+import { ASSUNTOS, casoNoNivel, rotuloAssunto, type Nivel } from "@/lib/programa";
+import { EscolherNivel } from "@/components/simulado/Simulado";
 
 export default function Inicio() {
   const { config, tentativas, casos } = useArmazenamento();
@@ -15,11 +17,13 @@ export default function Inicio() {
   };
   const [busca, setBusca] = useState("");
   const [area, setArea] = useState<"todas" | "clinica" | "cirurgica">("todas");
+  const [nivel, setNivel] = useState<"todos" | Nivel>("todos");
   const termo = busca.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   const filtrados = casos.filter((c) => {
     if (area !== "todas" && c.area !== area) return false;
+    if (nivel !== "todos" && !casoNoNivel(c, nivel)) return false;
     if (!termo) return true;
-    return [c.titulo, c.tema, c.especialidade].join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(termo);
+    return [c.titulo, c.tema, c.especialidade, ...c.programa.map((p) => `${rotuloAssunto(p.bloco, p.numero)} ${ASSUNTOS[p.bloco][p.numero - 1] ?? ""}`)].join(" ").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().includes(termo);
   });
   const grupos: [string, Caso[]][] = [
     ["Estações clínicas", filtrados.filter((c) => c.area === "clinica")],
@@ -39,14 +43,27 @@ export default function Inicio() {
         </div>
       </section>
 
+      <section>
+        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="flex items-center gap-2 text-lg font-bold"><ListChecks size={20} className="text-accent" /> Simulado de prova</h2>
+          <Link href="/simulado" className="text-sm font-semibold text-accent">Simulados anteriores</Link>
+        </div>
+        <EscolherNivel />
+      </section>
+
       <div className="flex flex-wrap items-center gap-2">
         <label className="flex min-w-60 flex-1 items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2">
           <Search size={16} className="text-muted" />
-          <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="Buscar tema (ex.: ombro, AVC, tireoide)" className="w-full bg-transparent text-sm outline-none" aria-label="Buscar estação" />
+          <input value={busca} onChange={(e) => setBusca(e.target.value)} placeholder="Buscar tema ou assunto (ex.: ombro, AVC, sutura)" className="w-full bg-transparent text-sm outline-none" aria-label="Buscar estação" />
         </label>
         <div className="inline-flex rounded-xl border border-line bg-surface p-0.5" role="radiogroup" aria-label="Área">
           {([["todas", "Todas"], ["clinica", "Clínicas"], ["cirurgica", "Cirúrgicas"]] as const).map(([v, r]) => (
             <button key={v} role="radio" aria-checked={area === v} onClick={() => setArea(v)} className={`rounded-lg px-3 py-1.5 text-[13px] font-medium ${area === v ? "bg-navy text-white dark:bg-accent dark:text-accent-contrast" : "text-muted hover:text-ink"}`}>{r}</button>
+          ))}
+        </div>
+        <div className="inline-flex rounded-xl border border-line bg-surface p-0.5" role="radiogroup" aria-label="Nível da prova">
+          {(["todos", "N1", "N2", "N3"] as const).map((v) => (
+            <button key={v} role="radio" aria-checked={nivel === v} onClick={() => setNivel(v)} className={`rounded-lg px-3 py-1.5 text-[13px] font-medium ${nivel === v ? "bg-navy text-white dark:bg-accent dark:text-accent-contrast" : "text-muted hover:text-ink"}`}>{v === "todos" ? "Todos os níveis" : v}</button>
           ))}
         </div>
         <span className="text-xs text-muted">{filtrados.length} de {casos.length} estações</span>
@@ -67,7 +84,9 @@ export default function Inicio() {
                     <p className="rotulo">{c.especialidade} · {NOME_CENARIO[c.cenario]}</p>
                     <h3 className="mt-1 text-lg font-bold leading-snug">{c.titulo}</h3>
                     <p className="mt-1 line-clamp-3 text-sm text-muted">{c.enunciado}</p>
-                    <p className="mt-2 text-xs font-semibold text-accent">{c.tema}</p>
+                    <p className="mt-2 text-xs font-semibold text-accent">
+                      {c.programa.length ? c.programa.map((p) => `${rotuloAssunto(p.bloco, p.numero)} · ${ASSUNTOS[p.bloco][p.numero - 1] ?? c.tema}`).join(" / ") : c.tema}
+                    </p>
                     <div className="mt-3 flex flex-wrap gap-3 text-xs text-muted">
                       <span className="inline-flex items-center gap-1"><Clock size={13} /> {tempo} min</span>
                       <span className="inline-flex items-center gap-1"><Stethoscope size={13} /> {c.manobras.length} manobras · {c.exames.length} exames</span>

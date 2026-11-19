@@ -33,6 +33,7 @@ export default function Simulacao() {
   const casoId = params.get("caso") ?? "";
   const modo = (params.get("modo") as Modo) || "osce";
   const foco = useMemo(() => (params.get("foco") ?? "").split(",").filter(Boolean), [params]);
+  const simulado = params.get("simulado") ?? undefined;
   const { pronto, casos } = useArmazenamento();
   const caso = pronto ? casos.find((c) => c.id === casoId) ?? null : undefined;
 
@@ -46,10 +47,10 @@ export default function Simulacao() {
         </div>
       </div>
     );
-  return <Atendimento caso={caso} modo={modo === "emergencia" && !caso.evolucao ? "osce" : modo} foco={foco} onSair={(id) => router.push(id ? `/relatorio?id=${id}` : "/")} />;
+  return <Atendimento caso={caso} modo={modo === "emergencia" && !caso.evolucao ? "osce" : modo} foco={foco} simulado={simulado} onSair={(id) => router.push(id ? `/relatorio?id=${id}` : simulado ? `/simulado?id=${simulado}` : "/")} />;
 }
 
-function Atendimento({ caso, modo, foco, onSair }: { caso: Caso; modo: Modo; foco: string[]; onSair: (tentativaId?: string) => void }) {
+function Atendimento({ caso, modo, foco, simulado, onSair }: { caso: Caso; modo: Modo; foco: string[]; simulado?: string; onSair: (tentativaId?: string) => void }) {
   const [config] = useState(() => armazenamento.config());
   const [movimentoReduzido] = useState(() => typeof window !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [sessao, setSessao] = useState(() => new Sessao(caso, modo, { foco, escalaClinica: config.escalaClinica }));
@@ -238,6 +239,7 @@ function Atendimento({ caso, modo, foco, onSair }: { caso: Caso; modo: Modo; foc
     const s = sessao;
     s.encerrar(Date.now(), tempoEsgotado);
     armazenamento.salvarTentativa({ registro: s.r, caso, revisoes: [], historicoRevisoes: [] });
+    if (simulado) armazenamento.registrarNoSimulado(simulado, caso.id, s.r.id);
     onSair(s.r.id);
   };
 

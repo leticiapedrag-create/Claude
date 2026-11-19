@@ -14,7 +14,7 @@ const ERRO_COMPARATIVO = "O exame articular deve ser comparativo, começando pel
 export const casoJoelho: CasoEntrada = {
   id: "joelho-lca",
   titulo: "Joelho inchado após torção no futebol",
-  area: "cirurgica",
+  area: "clinica",
   especialidade: "Ortopedia",
   tema: "Joelho",
   cenario: "pronto_atendimento",
@@ -304,7 +304,7 @@ export const casoGota: CasoEntrada = {
 export const casoAquiles: CasoEntrada = {
   id: "tornozelo-aquiles",
   titulo: "Estalo na panturrilha durante o jogo",
-  area: "cirurgica",
+  area: "clinica",
   especialidade: "Ortopedia",
   tema: "Tornozelo",
   cenario: "pronto_atendimento",

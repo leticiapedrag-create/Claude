@@ -8,6 +8,7 @@ import Relatorio from "@/components/relatorio/Relatorio";
 import Painel from "@/components/painel/Painel";
 import Casos from "@/components/casos/Casos";
 import Configuracoes from "@/components/config/Configuracoes";
+import Simulado from "@/components/simulado/Simulado";
 import { useRota } from "./shims/roteador";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     caminho === "/painel" ? <Painel /> :
     caminho === "/casos" ? <Casos /> :
     caminho === "/configuracoes" ? <Configuracoes /> :
+    caminho === "/simulado" ? <Simulado /> :
     <Inicio />;
   return (
     <Shell>

@@ -17,11 +17,11 @@ export const casoOmbro: CasoEntrada = {
   cenario: "consultorio",
   duracaoMin: 10,
   aviso: AVISO_DEMONSTRATIVO,
-  enunciado: "Sandra, 52 anos, cabeleireira, procura o ambulatório por dor no ombro direito há 3 meses.",
+  enunciado: "Sandra, 67 anos, cabeleireira aposentada que ainda atende clientes em casa, procura o ambulatório por dor no ombro direito há 3 meses.",
   tarefas: ["Realize a anamnese dirigida à dor no ombro.", "Realize a inspeção, a mobilidade ativa e passiva, a palpação e os testes específicos.", "Defina a hipótese, os diferenciais e a conduta."],
   paciente: {
     nome: "Sandra Lopes",
-    idade: 52,
+    idade: 67,
     sexo: "F",
     profissao: "Sou cabeleireira.",
     falaInicial: "Doutor(a), meu ombro direito dói há uns três meses, principalmente quando levanto o braço.",
@@ -31,7 +31,7 @@ export const casoOmbro: CasoEntrada = {
     limitacoes: [],
     personalidade: "Comunicativa.",
   },
-  avatar: { sexo: "F", idadeAparente: 52, pele: "#e3b896", cabelo: "#5a3a26", calvicie: false, roupa: "#b07d9a", emocao: "neutro" },
+  avatar: { sexo: "F", idadeAparente: 67, pele: "#e3b896", cabelo: "#a9a19a", calvicie: false, roupa: "#b07d9a", emocao: "neutro" },
   fatos: [
     fato("local", "Onde dói", "hda", G.local, "Dói na frente e do lado do ombro direito, às vezes desce até o meio do braço."),
     fato("inicio", "Início", "hda", G.inicio, "Começou há uns três meses, aos poucos."),
@@ -46,7 +46,7 @@ export const casoOmbro: CasoEntrada = {
     fato("intensidade", "Intensidade", "hda", G.intensidade, "Nota 6, quando levanto o braço chega a 8."),
     fato("medicamentos", "Medicamentos", "medicamentos", G.medicamentos, "Tomo paracetamol às vezes."),
     fato("comorbidades", "Comorbidades", "antecedentes", G.comorbidades, "Tenho hipotireoidismo, tomo levotiroxina."),
-    ...fatosBasicos({ idade: "Tenho 52 anos.", profissao: "Sou cabeleireira há 25 anos, trabalho com o braço levantado o dia inteiro." }),
+    ...fatosBasicos({ idade: "Tenho 67 anos.", profissao: "Sou cabeleireira aposentada, mas ainda atendo clientes em casa, com o braço levantado várias horas por dia." }),
   ],
   sinaisVitais: { paS: 126, paD: 80, fc: 74, fr: 15, sat: 98, temp: 36.4, ritmo: "regular" },
   manobras: [
@@ -114,7 +114,7 @@ export const casoOmbro: CasoEntrada = {
   ],
   errosCriticos: [],
   ficha: {
-    hda: "Mulher de 52 anos, cabeleireira, com dor no ombro direito há 3 meses, gradual, sem trauma, piora ao pentear, vestir e pegar objetos no alto, dor noturna ao deitar sobre o ombro, irradiação até o meio do braço.",
+    hda: "Mulher de 67 anos, cabeleireira aposentada ainda em atividade, com dor no ombro direito há 3 meses, gradual, sem trauma, piora ao pentear, vestir e pegar objetos no alto, dor noturna ao deitar sobre o ombro, irradiação até o meio do braço.",
     antecedentes: "Hipotireoidismo. Trabalho com braços elevados.",
     medicamentos: "Levotiroxina; paracetamol se dor. Sem alergias.",
     achadosClinicos: "Sem atrofias; arco doloroso 60–120° com passiva completa; dor no tubérculo maior; Neer, Hawkins, Yokum positivos; Jobe doloroso com força preservada; Gerber, Patte, Yergason e Speed negativos.",

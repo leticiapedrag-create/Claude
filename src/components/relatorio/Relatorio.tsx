@@ -2,13 +2,14 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { AlertOctagon, CheckCircle2, CircleDashed, Clock, FileDown, Pencil, RotateCcw, Target, TriangleAlert, XCircle } from "lucide-react";
+import { AlertOctagon, CheckCircle2, CircleDashed, Clock, FileDown, ListChecks, Pencil, Play, RotateCcw, Target, TriangleAlert, XCircle } from "lucide-react";
 import { COMPETENCIAS, ETAPAS, NOME_COMPETENCIA, NOME_ETAPA, NOME_CENARIO } from "@/lib/caso/schema";
 import { avaliar, projetarNaProva, type Evidencia, type ResultadoItem, type RevisaoManual, type StatusItem } from "@/lib/engine/avaliacao";
 import { itensParaTreinar, linhaDoTempo, planoDeRevisao } from "@/lib/engine/relatorio";
 import { formatarRelogio } from "@/lib/engine/emergencia";
 import { armazenamento } from "@/lib/store/armazenamento";
 import { valorDaEstacao } from "@/lib/store/config";
+import { resultadoSimulado } from "@/components/simulado/Simulado";
 import { useArmazenamento } from "@/hooks/useArmazenamento";
 import { RadarCompetencias } from "@/components/graficos/Graficos";
 import { NO_ARTEFATO } from "@/lib/plataforma";
@@ -26,7 +27,7 @@ function IconeStatus({ s }: { s: StatusItem }) {
 
 export default function Relatorio() {
   const id = useSearchParams().get("id") ?? "";
-  const { pronto, config, tentativas } = useArmazenamento();
+  const { pronto, config, tentativas, simulados, casos } = useArmazenamento();
   const t = tentativas.find((x) => x.registro.id === id);
   const [editando, setEditando] = useState<string | null>(null);
 
@@ -50,8 +51,24 @@ export default function Relatorio() {
     setEditando(null);
   };
 
+  const simulado = simulados.find((x) => Object.values(x.tentativas).includes(r.id));
+  const resSim = simulado ? resultadoSimulado(simulado, casos, tentativas, config) : null;
+
   return (
     <article className="space-y-5" data-testid="relatorio">
+      {simulado && resSim && (
+        <section className="nao-imprimir cartao flex flex-wrap items-center gap-3 border-accent/40 p-4" data-testid="faixa-simulado">
+          <ListChecks size={20} className="text-accent" />
+          <p className="min-w-0 flex-1 text-sm">
+            <strong>Simulado {simulado.nivel}</strong> · {resSim.feitas} de {simulado.casos.length} estações · {resSim.total.toFixed(2)} de {resSim.maximo.toFixed(2)} pts até agora
+          </p>
+          {resSim.proxima ? (
+            <Link className="botao-primario" href={`/simulacao?caso=${resSim.proxima.id}&modo=osce&simulado=${simulado.id}`}><Play size={16} /> Próxima estação</Link>
+          ) : (
+            <Link className="botao-primario" href={`/simulado?id=${simulado.id}`}>Ver resultado do simulado</Link>
+          )}
+        </section>
+      )}
       {/* cabeçalho */}
       <section className="cartao overflow-hidden">
         <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center">

@@ -317,7 +317,7 @@ export function PainelDecisoes(props: { caso: Caso; sessao: Sessao; versao: numb
         <p className="rounded-xl bg-warn/10 px-3 py-2 text-xs text-warn">Cada decisão registrada entra no relógio clínico e altera a evolução do paciente.</p>
       )}
       {CAMPOS.filter((c) => props.caso.decisoes[c.campo].length).map((c) => (
-        <BlocoDecisao key={c.campo} {...c} opcoes={embaralhar(props.caso.decisoes[c.campo], props.sessao.r.id + c.campo)} registradas={finais[c.campo]?.opcoes ?? null} onRegistrar={(ops) => props.onRegistrar(c.campo, ops)} />
+        <BlocoDecisao key={c.campo} {...c} titulo={props.caso.rotulosDecisao[c.campo] ?? c.titulo} opcoes={embaralhar(props.caso.decisoes[c.campo], props.sessao.r.id + c.campo)} registradas={finais[c.campo]?.opcoes ?? null} onRegistrar={(ops) => props.onRegistrar(c.campo, ops)} />
       ))}
     </div>
   );

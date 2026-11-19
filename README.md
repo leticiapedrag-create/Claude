@@ -59,7 +59,8 @@ npm run lint
 |---|---|
 | Sala 3D navegável (pronto atendimento, sala de procedimentos; consultório, emergência e enfermaria como variações da mesma sala) | Implementado |
 | Paciente 3D animado | Implementado (avatar procedural — ver limitações) |
-| **20 estações** — uma para cada tema do resumo de OSCE HAM V, mais feridas/sutura (tabela abaixo) | Implementado |
+| **39 estações** — pelo menos uma para cada um dos 32 assuntos de HAM 5 Práticas (tabela abaixo), com filtro N1/N2/N3 | Implementado |
+| **Simulado de prova** — sorteia 3 clínicas + 3 cirúrgicas do nível e soma na escala de 55 pontos | Implementado |
 | Conversa por texto e voz, transcrição, repetir pergunta, controle de microfone | Implementado (voz depende do navegador) |
 | Exame físico com escolha de **técnica** e avaliação da **sequência** | Implementado |
 | Modos Aprendizado, OSCE e Emergência (AVC e crise convulsiva com evolução no tempo) | Implementados |
@@ -72,30 +73,55 @@ npm run lint
 
 ## Estações incluídas
 
-Cada estação segue as perguntas, manobras e condutas do resumo de OSCE HAM V do aluno (semanas indicadas), complementadas por diretrizes citadas na ficha do caso. Todas estão marcadas como **rascunho** até revisão por um docente.
+São 39 estações, organizadas pela lista de assuntos do 5º período (HAM 5 Práticas). Cada assunto dos dois blocos tem pelo menos uma estação, e cada cartão mostra o número do assunto. Os níveis seguem a lista: **N1** = assuntos 01 a 07, **N2** = 01 a 12 (inclui a N1), **N3** = 13 a 16.
 
-| Semana | Estação | Tema | Destaques |
+Os roteiros seguem o resumo de OSCE HAM V do aluno e as diretrizes citadas na ficha de cada caso. São casos demonstrativos, não estações oficiais da Afya, e ficam marcados como **rascunho** até a revisão de um docente.
+
+### Bloco 1 — Clínica
+
+| Nº | Assunto | Nível | Estação(ões) |
 |---|---|---|---|
-| 02 | Vozes que ninguém mais ouve | Psicose | Delírios, alucinações, risco auto/hetero, exame do estado mental |
-| 03 | Queda na enfermaria | Segurança do paciente | Fatores intrínsecos/extrínsecos, PA ortostática, lesão por pressão, ambiente |
-| 04 | Dor lombar irradiada para a perna | Lombalgia | Escala 0–10, red flags, Lasègue, Bragard, Patrick-Fabere, Schober |
-| 04 | Dor no pescoço que desce para o braço | Cervicalgia | Spurling, compressão/descompressão, Lhermitte |
-| 05 | Joelho inchado após torção no futebol | Joelho | Gaveta, Lachman, pivot shift, McMurray, sinal da tecla |
-| 05 | Dor súbita no dedão do pé | Artropatia (gota) | Exame comparativo, artrite séptica, artrocentese |
-| 05 | Estalo na panturrilha durante o jogo | Tornozelo | Thompson, falha palpável, flexão do joelho |
-| 06 | Dor no ombro para pentear o cabelo | Ombro | Neer, Hawkins, Yokum, Jobe, Gerber, Patte, Apley, Yergason, Speed |
-| 06 | Dor no cotovelo ao segurar objetos | Cotovelo | Mill, Cozen, epicondilite medial, valgo/varo |
-| 07 | Fraqueza na perna após um susto | Transtorno neurológico funcional | Hoover, teste da cadeira, hemianalgesia, elevação do joelho |
-| 08 | Déficit neurológico súbito no pronto atendimento | AVC | NIHSS, janela terapêutica, trombólise (modo emergência) |
-| 10 | Crise convulsiva na sala de emergência | Crise convulsiva | ABCDE, escalonamento benzodiazepínico → fenitoína (modo emergência) |
-| 11 | Tremor e lentidão no idoso | Parkinson e cuidados paliativos | Finger tapping, rigidez, pull test, TUG, critérios de paliativos |
-| 12 | Tristeza e desesperança | Risco de suicídio | Plano, meios, intenção, estratificação de risco |
-| 14 | Febre, cefaleia e rigidez de nuca | Meningite e punção lombar | Sinais meníngeos, contraindicações, técnica e 4 tubos |
-| 15 | Dor de ouvido depois do resfriado | Otoscopia | Técnica do otoscópio, Weber e Rinne |
-| 15 | Tontura ao virar na cama | Vertigem (VPPB) | Romberg, Dix-Hallpike, Epley, sinais centrais |
-| 16 | Visão embaçada no diabético | Fundoscopia e diabetes | Técnica do oftalmoscópio, achados da retinopatia, monofilamento |
-| 17 | Cansaço, frio e ganho de peso | Distúrbios tireoidianos | Hipo × hiper, sintomas compressivos, etiologia, palpação da tireoide |
-| — | Ferida no antebraço | Feridas e sutura | Assepsia, anestesia, irrigação, sutura, profilaxia antitetânica |
+| 01 | Entrevista em Saúde Mental | N1, N2 | Vozes que ninguém mais ouve |
+| 02 | Segurança do Paciente | N1, N2 | Queda na enfermaria |
+| 03 | Exame do Paciente com Dor | N1, N2 | Dor lombar irradiada para a perna; Dor no pescoço que desce para o braço |
+| 04 | Exame do Paciente com Artropatia | N1, N2 | Joelho inchado após torção no futebol; Dor súbita no dedão do pé; Estalo na panturrilha durante o jogo; Dor no cotovelo ao segurar objetos |
+| 05 | Exame do Ombro no Idoso | N1, N2 | Dor no ombro para pentear o cabelo |
+| 06 | Manejo de Desordens Neurológicas Não Orgânicas | N1, N2 | Fraqueza na perna após um susto |
+| 07 | Avaliação do Quadro Neurológico Isquêmico Agudo | N1, N2 | Déficit neurológico súbito no pronto atendimento (modo emergência) |
+| 08 | Manejo do Paciente Agitado e Agressivo | N2 | Paciente agitado no pronto atendimento |
+| 09 | Avaliação da Crise Epiléptica no Pronto Atendimento | N2 | Crise convulsiva na sala de emergência (modo emergência) |
+| 10 | Síndrome Extrapiramidal (Parkinson) e Cuidados Paliativos | N2 | Tremor e lentidão no idoso |
+| 11 | Manejo do Paciente com Tendência Suicida | N2 | Tristeza e desesperança |
+| 12 | Coleta de Líquor em Paciente com Encefalopatia | N2 | Confusão e febre: coleta de líquor; Febre, cefaleia e rigidez de nuca |
+| 13 | Técnica de Otoscopia e Interpretação | N3 | Dor de ouvido depois do resfriado; Tontura ao virar na cama |
+| 14 | Avaliação do Paciente Diabético no Pronto Atendimento | N3 | Diabético com vômitos e respiração rápida; Visão embaçada no diabético |
+| 15 | Avaliação do Paciente com Distúrbio Tireoidiano | N3 | Cansaço, frio e ganho de peso |
+| 16 | Distúrbios Hipotálamo-Hipofisários e Automedicação | N3 | Ganho de peso após 'remédio para dor' |
+
+### Bloco 2 — Cirúrgica
+
+| Nº | Assunto | Nível | Estação(ões) |
+|---|---|---|---|
+| 01 | NR 32 e Normas de Biossegurança | N1, N2 | Picada de agulha na enfermaria |
+| 02 | Escovação, Paramentação e Desparamentação | N1, N2 | Escovação e paramentação cirúrgica |
+| 03 | Antissepsia e Campos Cirúrgicos | N1, N2 | Preparo do campo operatório |
+| 04 | Instrumentação Cirúrgica | N1, N2 | Montagem da mesa de instrumentação |
+| 05 | Técnica de Anestesia Local | N1, N2 | Anestesia local para retirada de lipoma |
+| 06 | Manuseio de Instrumental e Sutura Interrompida | N1, N2 | Ferida no antebraço: avaliação, assepsia e sutura |
+| 07 | Sutura Contínua | N1, N2 | Fechamento de pele com sutura contínua |
+| 08 | Modalidades de Hemostasia | N2 | Ferida sangrante no couro cabeludo |
+| 09 | Cuidados com Ferida Pós-operatória | N2 | Ferida operatória com secreção |
+| 10 | Manejo da Via Aérea e Intubação Orotraqueal | N2 | Rebaixamento de consciência na sala vermelha |
+| 11 | Cuidados com Lesões por Pressão | N2 | Lesão sacral em paciente acamada |
+| 12 | Punção Venosa Periférica e Coleta de Sangue | N2 | Coleta de sangue venoso |
+| 13 | Tratamento do Abscesso Cutâneo | N3 | Nódulo doloroso na coxa |
+| 14 | Manejo da Dor Pós-operatória | N3 | Dor no primeiro dia de pós-operatório |
+| 15 | Protocolo de Cirurgia Segura | N3 | Lista de verificação na sala operatória |
+| 16 | TCLE e Revisão de Procedimentos | N3 | Consentimento para colecistectomia |
+
+## Simulado de prova
+
+Na tela inicial (ou no menu **Simulado**), escolha N1, N2 ou N3. O app sorteia 3 estações clínicas e 3 cirúrgicas de assuntos diferentes dentro do nível. Todas rodam no modo OSCE, uma depois da outra. Depois de cada estação, o relatório mostra o placar parcial e o botão **Próxima estação**. No fim, a página do simulado soma os pontos na escala da prova (55 pontos por padrão) e compara com a meta (31,4). Sem checklist oficial, cada estação vale 55 ÷ 6, e a tela avisa que esse valor é uma suposição. O valor de cada estação pode ser ajustado em Configurações.
 
 ## Transparência: o que é 3D, o que é externo e o que é simplificado
 
