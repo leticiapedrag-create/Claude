@@ -9,6 +9,7 @@ import Painel from "@/components/painel/Painel";
 import Casos from "@/components/casos/Casos";
 import Configuracoes from "@/components/config/Configuracoes";
 import Simulado from "@/components/simulado/Simulado";
+import MesaCirurgica from "@/components/mesa/MesaCirurgica";
 import { useRota } from "./shims/roteador";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
     caminho === "/casos" ? <Casos /> :
     caminho === "/configuracoes" ? <Configuracoes /> :
     caminho === "/simulado" ? <Simulado /> :
+    caminho === "/mesa" ? <MesaCirurgica /> :
     <Inicio />;
   return (
     <Shell>

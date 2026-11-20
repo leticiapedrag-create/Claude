@@ -1,7 +1,7 @@
 // Gera a versão de página única: dist-artefato/index.html + app.js
 import { build } from "esbuild";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -41,5 +41,8 @@ const html = `<title>OSCE Immersive</title>
 <script src="app.js"></script>
 `;
 writeFileSync(path.join(saida, "index.html"), html);
+// Fotos dos instrumentos (mesa cirúrgica), servidas ao lado da página.
+const fotos = path.join(raiz, "public/instrumentos");
+if (existsSync(fotos)) cpSync(fotos, path.join(saida, "instrumentos"), { recursive: true });
 const kb = (f) => Math.round(readFileSync(path.join(saida, f)).length / 1024);
 console.log(`index.html ${kb("index.html")} KB · app.js ${kb("app.js")} KB`);

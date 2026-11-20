@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Activity, BookOpen, Hospital, LayoutDashboard, ListChecks, Moon, Settings, Sun } from "lucide-react";
+import { Activity, BookOpen, Hospital, LayoutDashboard, ListChecks, Moon, Scissors, Settings, Sun } from "lucide-react";
 import { armazenamento } from "@/lib/store/armazenamento";
 import { aplicarTema, useArmazenamento } from "@/hooks/useArmazenamento";
 
 const LINKS = [
   { href: "/", rotulo: "Hospital", icone: Hospital },
   { href: "/simulado", rotulo: "Simulado", icone: ListChecks },
+  { href: "/mesa", rotulo: "Mesa cirúrgica", icone: Scissors },
   { href: "/painel", rotulo: "Desempenho", icone: LayoutDashboard },
   { href: "/casos", rotulo: "Casos", icone: BookOpen },
   { href: "/configuracoes", rotulo: "Configurações", icone: Settings },

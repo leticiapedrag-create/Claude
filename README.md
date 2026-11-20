@@ -123,6 +123,13 @@ Os roteiros seguem o resumo de OSCE HAM V do aluno e as diretrizes citadas na fi
 
 As aulas enviadas pelo aluno (Centro Cirúrgico 1, Clínica Cirúrgica 1 e HAM V) foram usadas para revisar as estações e criar quatro novas: displasia do desenvolvimento do quadril, equipe e posicionamento do paciente, agulhas/fios/nós e estrutura física do centro cirúrgico. Nas estações revisadas (paramentação, antissepsia e campos, instrumentação, anestesia local, agitação, crise epiléptica, risco de suicídio, gota, ferida e segurança do paciente), as técnicas, sequências e explicações seguem o que as aulas ensinam, e as fichas citam as referências das próprias aulas.
 
+## Mesa cirúrgica (montagem da mesa)
+
+Menu **Mesa cirúrgica**. Os instrumentos aparecem como adesivos (fotos reais, sem fundo) numa bandeja. Arraste cada um para a área da mesa, na ordem dos tempos cirúrgicos (1 diérese, 2 preensão, 3 hemostasia, 4 afastadores, 5 especiais, 6 síntese, como na aula), e escolha o nome. No celular e no iPad também dá para tocar no instrumento e depois na área. A verificação corrige área e nome de cada peça, explica a função, guarda o histórico no aparelho e permite treinar só os erros. Os nomes das áreas ficam escondidos por padrão.
+
+- **Fotos:** 14 instrumentos com fotos do Wikimedia Commons (domínio público, CC0, CC BY e CC BY-SA). O fundo foi removido automaticamente (rembg, modelo IS-Net), o instrumento foi deitado na horizontal e ganhou contorno branco de adesivo. As versões recortadas seguem a licença da original; autor, licença e link de cada foto ficam em "Créditos das fotos", na própria página.
+- **Fora por enquanto:** afastador de Farabeuf, pinça dente de rato e Halstead (mosquito). Não achei fotos livres em que dê para reconhecê-los no tamanho de adesivo (a dente de rato fica igual à anatômica). Kelly e Kocher são parecidas na foto; a diferença (dente na ponta da Kocher) aparece na correção.
+
 ## Simulado de prova
 
 Na tela inicial (ou no menu **Simulado**), escolha N1, N2 ou N3. O app sorteia 3 estações clínicas e 3 cirúrgicas de assuntos diferentes dentro do nível. Todas rodam no modo OSCE, uma depois da outra. Depois de cada estação, o relatório mostra o placar parcial e o botão **Próxima estação**. No fim, a página do simulado soma os pontos na escala da prova (55 pontos por padrão) e compara com a meta (31,4). Sem checklist oficial, cada estação vale 55 ÷ 6, e a tela avisa que esse valor é uma suposição. O valor de cada estação pode ser ajustado em Configurações.
